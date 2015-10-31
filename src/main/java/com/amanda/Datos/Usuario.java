@@ -10,5 +10,10 @@ package com.amanda.Datos;
  * @author camm
  */
 public class Usuario {
-    
+    private String nombre;
+    private String cedula;
+    private String apellido;
+    private String contrasena;
+    private String resp1;
+    private String resp2;
 }
