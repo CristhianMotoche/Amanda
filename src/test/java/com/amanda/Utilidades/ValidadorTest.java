@@ -64,4 +64,17 @@ public class ValidadorTest {
 
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testCedulaValida5() {
+        System.out.println("Cedula no valida");
+        Validador instance = new Validador();
+
+        String ci = "17s5651631";
+
+        boolean expResult = false;
+        boolean result = instance.cedulaValida(ci);
+
+        assertEquals(expResult, result);
+    }
 }

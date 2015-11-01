@@ -5,6 +5,8 @@
  */
 package com.amanda.Utilidades;
 
+import java.util.regex.Pattern;
+
 /**
  *
  * @author camm
@@ -15,7 +17,8 @@ public class Validador {
     }
 
     public boolean cedulaValida(String cedula){
-        if (cedula.length() > 10 || cedula.length() < 10) {
+        if (cedula.length() > 10 || cedula.length() < 10 
+                || !Pattern.matches("[0-9]+", cedula)) {
             return false;
         }
         else{
