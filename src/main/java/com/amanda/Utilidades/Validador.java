@@ -17,7 +17,7 @@ public class Validador {
     }
 
     public boolean cedulaValida(String cedula){
-        if (cedula.length() > 10 || cedula.length() < 10 
+        if (cedula.length() > 10 || cedula.length() < 10
                 || !Pattern.matches("[0-9]+", cedula)) {
             return false;
         }
@@ -30,7 +30,7 @@ public class Validador {
         }
     }
 
-    public boolean luhn(int numeros[]){
+    private boolean luhn(int numeros[]){
         int numVerificacion = numeros[numeros.length - 1];
         int suma = 0;
 
@@ -49,5 +49,9 @@ public class Validador {
         resultado = (resultado < 10)? resultado : 0;
 
         return (resultado == numVerificacion);
+    }
+
+    public boolean contrasenaValida(String contrasena){
+        return true;
     }
 }
