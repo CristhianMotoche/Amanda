@@ -5,6 +5,15 @@
  */
 package com.amanda.Presentacion;
 
+import com.amanda.Datos.Usuario;
+import com.amanda.Logica.TablaUsuario;
+import com.amanda.Utilidades.Cifrador;
+import javax.swing.JOptionPane;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author camm
@@ -54,6 +63,11 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         pnlRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro Usuario"));
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -190,6 +204,27 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        Usuario user = new Usuario();
+        Cifrador cifrador = new Cifrador();
+
+        user.setNombre(this.txtNombre.getText().trim());
+        user.setApellido(this.txtApellido.getText().trim());
+        user.setContrasena(cifrador
+                .md5((new String(this.passContrasena.getPassword()))
+                .concat(this.txtCedula.getText())));
+        user.setResp1(this.txtResp1.getText().trim());
+        user.setResp2(this.txtResp2.getText().trim());
+
+        TablaUsuario tablaUsuario = new TablaUsuario();
+        if (tablaUsuario.insertar(user)) {
+            JOptionPane.showMessageDialog(this, "Ingreso con éxito");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -197,7 +232,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
