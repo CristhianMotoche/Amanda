@@ -5,7 +5,10 @@
  */
 package com.amanda.Utilidades;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.Match;
 import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
 
 /**
  *
@@ -51,7 +54,14 @@ public class Validador {
         return (resultado == numVerificacion);
     }
 
-    public boolean contrasenaValida(String contrasena){
+    public boolean contrasenaValida(String contrasena){    
+        Pattern expR = Pattern.compile("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])"
+                + ".{8,16}$");
+        Matcher comp = expR.matcher(contrasena); //comprobador
+       
+        if(!comp.find()) {
+            return false;
+        }
         return true;
     }
 }

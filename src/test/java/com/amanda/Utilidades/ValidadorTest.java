@@ -155,4 +155,17 @@ public class ValidadorTest {
 
         assertEquals(expResult, result);
     }
+    
+    @Test
+    public void testContrasenaValida7() {
+        System.out.println("Contrasena valida");
+
+        String contrasena = "Amanda 12 34";
+        Validador instance = new Validador();
+
+        boolean expResult = true;
+        boolean result = instance.contrasenaValida(contrasena);
+
+        assertEquals(expResult, result);
+    }
 }
