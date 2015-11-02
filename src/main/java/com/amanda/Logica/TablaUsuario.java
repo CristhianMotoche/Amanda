@@ -19,8 +19,9 @@ public class TablaUsuario extends Tabla{
     @Override
     public boolean insertar(Datos dts) {
         Usuario user = (Usuario) dts;
-        cadSQL = "INSERT INTO USUARIOS (NOMBRE, APELLIDO, CEDULA, CONTRASENA, RESP1"+
-                ", RESP2) values (?,?,?,?,?,?)";
+        cadSQL = "INSERT INTO USUARIO (NOMBRE, APELLIDO, CI, CONTRASENA, RESPUESTA1"
+                + ", RESPUESTA2, PREGUNTA1, PREGUNTA2) "
+                + "VALUES (?,?,?,?,?,?,?,?)";
         try {
             PreparedStatement pst = this.con.preparar(cadSQL);
             pst.setString(1, user.getNombre());
@@ -29,6 +30,8 @@ public class TablaUsuario extends Tabla{
             pst.setString(4, user.getContrasena());
             pst.setString(5, user.getResp1());
             pst.setString(6, user.getResp2());
+            pst.setString(7, user.getPreg1());
+            pst.setString(8, user.getPreg2());
 
             int n = pst.executeUpdate();
 

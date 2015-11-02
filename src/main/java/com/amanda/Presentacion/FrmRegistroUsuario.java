@@ -8,11 +8,8 @@ package com.amanda.Presentacion;
 import com.amanda.Datos.Usuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Utilidades.Cifrador;
+import com.amanda.Utilidades.Validador;
 import javax.swing.JOptionPane;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -206,22 +203,10 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         // TODO add your handling code here:
-        Usuario user = new Usuario();
-        Cifrador cifrador = new Cifrador();
-
-        user.setNombre(this.txtNombre.getText().trim());
-        user.setApellido(this.txtApellido.getText().trim());
-        user.setContrasena(cifrador
-                .md5((new String(this.passContrasena.getPassword()))
-                .concat(this.txtCedula.getText())));
-        user.setResp1(this.txtResp1.getText().trim());
-        user.setResp2(this.txtResp2.getText().trim());
-
-        TablaUsuario tablaUsuario = new TablaUsuario();
-        if (tablaUsuario.insertar(user)) {
-            JOptionPane.showMessageDialog(this, "Ingreso con éxito");
+        if (camposValidos()) {
+            ingresarNuevoUsuario();
         } else {
-            JOptionPane.showMessageDialog(this, "Error");
+            JOptionPane.showMessageDialog(this, "Error en el ingreso de datos");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -283,4 +268,37 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField txtResp1;
     private javax.swing.JTextField txtResp2;
     // End of variables declaration//GEN-END:variables
+
+    private void ingresarNuevoUsuario() {
+        Usuario user = new Usuario();
+        Cifrador cifrador = new Cifrador();
+
+        user.setNombre(this.txtNombre.getText().trim());
+        user.setApellido(this.txtApellido.getText().trim());
+        user.setContrasena(cifrador
+                .md5((new String(this.passContrasena.getPassword()))
+                .concat(this.txtCedula.getText())));
+        user.setCedula(this.txtCedula.getText().trim());
+        user.setPreg1(Integer.toString(this.cmbPregunta1.getSelectedIndex()));
+        user.setPreg2(Integer.toString(this.cmbPregunta2.getSelectedIndex()));
+        user.setResp1(this.txtResp1.getText().trim());
+        user.setResp2(this.txtResp2.getText().trim());
+
+        TablaUsuario tablaUsuario = new TablaUsuario();
+        if (tablaUsuario.insertar(user)) {
+            JOptionPane.showMessageDialog(this, "Ingreso con éxito");
+        } else {
+            JOptionPane.showMessageDialog(this, "Error");
+        }
+    }
+
+    private boolean camposValidos() {
+        Validador validador = new Validador();
+        String contrasena = new String(this.passContrasena.getPassword());
+        String confirmacion = new String(this.passConfirmacion.getPassword());
+
+        return validador.cedulaValida(this.txtCedula.getText())
+                && validador.contrasenaValida(contrasena)
+                && confirmacion.equals(contrasena);
+    }
 }
