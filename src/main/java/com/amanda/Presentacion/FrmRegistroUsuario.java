@@ -279,17 +279,23 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 .md5((new String(this.passContrasena.getPassword()))
                 .concat(this.txtCedula.getText())));
         user.setCedula(this.txtCedula.getText().trim());
-        user.setPreg1(Integer.toString(this.cmbPregunta1.getSelectedIndex()));
-        user.setPreg2(Integer.toString(this.cmbPregunta2.getSelectedIndex()));
+        user.setPreg1(this.cmbPregunta1.getSelectedIndex());
+        user.setPreg2(this.cmbPregunta2.getSelectedIndex());
         user.setResp1(this.txtResp1.getText().trim());
         user.setResp2(this.txtResp2.getText().trim());
 
         TablaUsuario tablaUsuario = new TablaUsuario();
-        if (tablaUsuario.insertar(user)) {
-            JOptionPane.showMessageDialog(this, "Ingreso con éxito");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error");
+        if (tablaUsuario.buscarPorCedula(user.getCedula()).getCedula() == null) {
+            if (tablaUsuario.insertar(user)) {
+                JOptionPane.showMessageDialog(this, "Ingreso con éxito");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al insertar");
+            }
         }
+        else{
+            JOptionPane.showMessageDialog(this, "El usuario ya se encuentra registrado");
+        }
+
     }
 
     private boolean camposValidos() {

@@ -5,6 +5,10 @@
  */
 package com.amanda.Presentacion;
 
+import com.amanda.Datos.Usuario;
+import com.amanda.Logica.TablaUsuario;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author camm
@@ -47,6 +51,11 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Restaurar Contraseña"));
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
@@ -65,6 +74,11 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         lblCedula.setText("Cedula Identidad:");
 
         btnVerificar.setText("Verificar");
+        btnVerificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerificarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -89,12 +103,12 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
                     .addComponent(cmbPregunta2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtResp2))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(130, 130, 130)
                 .addComponent(btnAceptar)
                 .addGap(49, 49, 49)
                 .addComponent(btnCancelar)
-                .addGap(86, 86, 86))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,6 +161,48 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
+        // TODO add your handling code here:
+        Usuario user;
+        TablaUsuario tablaUsuario = new TablaUsuario();
+        user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
+
+        if (user != null && user.getCedula() != null) {
+            this.cmbPregunta1.setSelectedIndex(user.getPreg1());
+            this.cmbPregunta2.setSelectedIndex(user.getPreg2());
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "No se encuentra el usuario con "
+                    + "la cédula " + this.txtCedula.getText());
+        }
+    }//GEN-LAST:event_btnVerificarActionPerformed
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        Usuario user;
+        TablaUsuario tablaUsuario = new TablaUsuario();
+        user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
+
+        if (user != null && user.getCedula() != null) {
+            if (user.getResp1().equals(this.txtResp1.getText())
+                    && user.getResp2().equals(this.txtResp2.getText())
+                    && user.getPreg1() == this.cmbPregunta1.getSelectedIndex()
+                    && user.getPreg2() == this.cmbPregunta2.getSelectedIndex()) {
+
+                tablaUsuario.modificarContrasena(user, user.getCedula());
+                JOptionPane.showMessageDialog(this, "Su contraseña actual es "
+                        + user.getCedula() + "\nes aconcejable que la cambie "
+                        + "inmediatamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al intentar modificar");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "No se encuentra el usuario con "
+                    + "la cédula " + this.txtCedula.getText());
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -154,7 +210,7 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
