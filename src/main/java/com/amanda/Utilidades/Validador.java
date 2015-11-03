@@ -43,7 +43,7 @@ public class Validador {
             }
         }
 
-        for (int i = 0; i < numeros.length; i++) {
+        for (int i = 0; i < numeros.length - 1; i++) {
             suma += numeros[i];
         }
 

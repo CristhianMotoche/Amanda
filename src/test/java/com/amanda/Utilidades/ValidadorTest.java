@@ -79,6 +79,19 @@ public class ValidadorTest {
     }
 
     @Test
+    public void testCedulaValida6() {
+        System.out.println("Cedula valida");
+        Validador instance = new Validador();
+
+        String ci = "0914010459";
+
+        boolean expResult = true;
+        boolean result = instance.cedulaValida(ci);
+
+        assertEquals(expResult, result);
+    }
+
+    @Test
     public void testContrasenaValida() {
         System.out.println("Contrasena invalida - menos de 8 caracteres");
 
@@ -155,7 +168,7 @@ public class ValidadorTest {
 
         assertEquals(expResult, result);
     }
-    
+
     @Test
     public void testContrasenaValida7() {
         System.out.println("Contrasena valida");
