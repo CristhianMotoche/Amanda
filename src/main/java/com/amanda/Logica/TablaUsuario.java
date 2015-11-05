@@ -25,7 +25,7 @@ public class TablaUsuario extends Tabla{
                 + ", RESPUESTA2, PREGUNTA1, PREGUNTA2) "
                 + "VALUES (?,?,?,?,?,?,?,?)";
         try {
-            PreparedStatement pst = this.con.preparar(cadSQL);
+            PreparedStatement pst = this.con.prepareStatement(cadSQL);
             pst.setString(1, user.getNombre());
             pst.setString(2, user.getApellido());
             pst.setString(3, user.getCedula());
@@ -63,7 +63,7 @@ public class TablaUsuario extends Tabla{
                 + ", PREGUNTA1 = ?, PREGUNTA2 = ?, RESPUESTA1 = ?, RESPUESTA2 = ?"
                 + "WHERE CI LIKE \'" + usuario.getCedula() + "\'";
         try{
-            PreparedStatement ps = con.preparar(cadSQL);
+            PreparedStatement ps = con.prepareStatement(cadSQL);
             ps.setString(1, usuario.getNombre());
             ps.setString(2, usuario.getApellido());
             ps.setString(3, usuario.getContrasena());
@@ -81,11 +81,11 @@ public class TablaUsuario extends Tabla{
     }
 
     public Usuario buscarPorCedula(String cedula){
-        Statement sentencia = con.Crear();
         Usuario usuario = new Usuario();
         cadSQL = "SELECT * FROM USUARIO "
                + "WHERE CI LIKE \'" + cedula + "\'";
         try {
+            Statement sentencia = con.createStatement();
             ResultSet resultado = sentencia.executeQuery(cadSQL);
 
             while (resultado.next()) {
