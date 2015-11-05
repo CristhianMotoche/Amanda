@@ -53,14 +53,25 @@ public class Validador {
         return (resultado == numVerificacion);
     }
 
-    public boolean contrasenaValida(String contrasena){
+    public boolean contrasenaValida(String contrasena){    
         Pattern expR = Pattern.compile("^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z])"
-                + ".{8,16}$");
+                +".{8,16}$");
         Matcher comp = expR.matcher(contrasena); //comprobador
-
-        if(!comp.find()) {
+       
+        Pattern espacios = Pattern.compile("([ ])");
+        Matcher compEsp = espacios.matcher(contrasena);
+        
+        if(!comp.find() || compEsp.find()) {
             return false;
         }
+        
         return true;
+    }
+    
+    //con toUpperCase se hace mayuscula lo q recibe
+    public void mayusculas() {
+        String cadena = "hola dey";
+        
+        System.out.println(cadena.toUpperCase());
     }
 }

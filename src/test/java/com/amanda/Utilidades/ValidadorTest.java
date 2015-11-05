@@ -176,7 +176,7 @@ public class ValidadorTest {
         String contrasena = "Amanda 12 34";
         Validador instance = new Validador();
 
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.contrasenaValida(contrasena);
 
         assertEquals(expResult, result);
