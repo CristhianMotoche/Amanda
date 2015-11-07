@@ -1,7 +1,7 @@
 package com.amanda.Presentacion;
 
-import com.amanda.Datos.DatosProveedor;
-import com.amanda.Logica.TablaProveedor;
+import com.amanda.Datos.*;
+import com.amanda.Logica.*;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,6 +13,7 @@ public class frmProveedores extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         mostrar();
+        IdUsuario= 1;
     }
     
     private void mostrar(){
@@ -296,7 +297,7 @@ public class frmProveedores extends javax.swing.JDialog {
         DatosProveedor dp = new DatosProveedor();
         TablaProveedor tp = new TablaProveedor();
         dp.IdProveedor = IdProveedor;
-        dp.IdUsuario = IdUsuario;
+        dp.IdUsuario = 1;//IdUsuario;
         dp.Ruc = txtRUC.getText().trim();
         dp.RazonSocial = txtRSocial.getText().trim();
         dp.Direccion = txtDireccion.getText().trim();
@@ -344,7 +345,24 @@ public class frmProveedores extends javax.swing.JDialog {
 
     private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
         if (IdUsuario == IdUsuarioRegistro){
-            
+            DatosFactura df = new DatosFactura();
+            TablaFactura tf = new TablaFactura();
+            df.IdProveedor = IdProveedor;
+            df.IdUsuario = IdUsuario;
+            if (tf.contarFacturasProveedor(df) == 0){
+                DatosProveedor dp = new DatosProveedor();
+                TablaProveedor tp = new TablaProveedor();
+                dp.IdProveedor = IdProveedor;
+                if (tp.eliminar(dp)){
+                    JOptionPane.showMessageDialog(null, "Operación completada");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error. La operación no ha podido ser ejecutada");
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error. Hay usuarios que regisran facturas de este proveedor");
+            }
+        } else{
+            JOptionPane.showMessageDialog(null, "Usted no puede eliminar este registro");
         }
     }//GEN-LAST:event_cmdEliminarActionPerformed
 

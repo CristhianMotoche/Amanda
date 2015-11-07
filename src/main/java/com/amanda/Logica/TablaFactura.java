@@ -117,6 +117,22 @@ public class TablaFactura extends Tabla {
         return ret;
     }
     
+    public int contarFacturasProveedor(Datos dts){
+        DatosFactura df = (DatosFactura)dts;
+        int ret = -1;
+        cadSQL = "select count(idfactura) as idproveedor from factura where idproveedor = " + df.IdProveedor;// + " and idusuario <> " + df.IdUsuario;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(cadSQL);
+            while (rs.next()){
+                ret = rs.getInt("idproveedor");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error 'Mostrar' " + e);
+        }
+        return ret;
+    }
+    
     /*public boolean eliminarPorIdLimite(Datos dts){
         DatosLimiteGasto dlg = (DatosLimiteGasto)dts;
         boolean ret = false;
