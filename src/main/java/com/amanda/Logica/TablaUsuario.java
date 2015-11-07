@@ -10,7 +10,10 @@ import com.amanda.Datos.Usuario;
 import com.amanda.Utilidades.Cifrador;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -48,7 +51,16 @@ public class TablaUsuario extends Tabla{
 
     @Override
     public boolean eliminar(Datos dts) {
-        return true;
+        Usuario usuario = (Usuario) dts;
+        this.cadSQL = "DELETE FROM USUARIO "
+                + "WHERE CI LIKE \'" + usuario.getCedula() + "\'";
+        int cuenta = 0;
+        try (Statement statement = this.con.createStatement()) {
+            cuenta = statement.executeUpdate(this.cadSQL);
+        } catch (SQLException ex) {
+            Logger.getLogger(TablaUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return (cuenta > 0);
     }
 
     @Override

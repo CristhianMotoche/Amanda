@@ -5,12 +5,20 @@
  */
 package com.amanda.Presentacion.Usuario;
 
+import com.amanda.Datos.Usuario;
+import com.amanda.Logica.TablaUsuario;
+import com.amanda.Utilidades.Cifrador;
+import com.amanda.Utilidades.Validador;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author camm
  */
 public class FrmEliminarUsuario extends javax.swing.JFrame {
 
+    TablaUsuario tablaUsuario = new TablaUsuario();
+    Usuario usuario = tablaUsuario.buscarPorCedula("1725651630");
     /**
      * Creates new form FrmEliminarUsuario
      */
@@ -29,9 +37,9 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
 
         pnlEliminar = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txtConfirmacion = new javax.swing.JTextField();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
+        passContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -40,8 +48,15 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         jLabel1.setText("Confirmar contraseña");
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+
+        passContrasena.setText("jPasswordField1");
 
         javax.swing.GroupLayout pnlEliminarLayout = new javax.swing.GroupLayout(pnlEliminar);
         pnlEliminar.setLayout(pnlEliminarLayout);
@@ -58,8 +73,8 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
                 .addGroup(pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
-                    .addComponent(txtConfirmacion, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26))
+                    .addComponent(passContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         pnlEliminarLayout.setVerticalGroup(
             pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -67,7 +82,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtConfirmacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
@@ -95,6 +110,18 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        if (validarCampos()) {
+            if (JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea "
+                    + "eliminar a este usuario?") == JOptionPane.YES_OPTION) {
+                if (this.tablaUsuario.eliminar(usuario)) {
+                    JOptionPane.showMessageDialog(this, "Usuario eliminado");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -102,7 +129,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -134,7 +161,24 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JPasswordField passContrasena;
     private javax.swing.JPanel pnlEliminar;
-    private javax.swing.JTextField txtConfirmacion;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarCampos() {
+        Validador validador = new Validador();
+        Cifrador cifrador = new Cifrador();
+
+        String hashContrasena = cifrador
+                    .md5((new String(this.passContrasena.getPassword()))
+                    .concat(this.usuario.getCedula()));
+
+        if (hashContrasena.equals(this.usuario.getContrasena())) {
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
+            return false;
+        }
+    }
 }
