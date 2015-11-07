@@ -15,14 +15,15 @@ import javax.swing.JOptionPane;
  *
  * @author camm
  */
-public class FrmEliminarUsuario extends javax.swing.JFrame {
+public class DialogEliminarUsuario extends javax.swing.JDialog {
 
     TablaUsuario tablaUsuario = new TablaUsuario();
     Usuario usuario = tablaUsuario.buscarPorCedula("1725651630");
     /**
-     * Creates new form FrmEliminarUsuario
+     * Creates new form DialogEliminarUsuario
      */
-    public FrmEliminarUsuario() {
+    public DialogEliminarUsuario(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -41,7 +42,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         btnCancelar = new javax.swing.JButton();
         passContrasena = new javax.swing.JPasswordField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlEliminar.setBorder(javax.swing.BorderFactory.createTitledBorder("Eliminar usuario"));
 
@@ -70,7 +71,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
                     .addGroup(pnlEliminarLayout.createSequentialGroup()
                         .addGap(64, 64, 64)
                         .addComponent(btnAceptar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(pnlEliminarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnCancelar)
                     .addComponent(passContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -114,11 +115,11 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (validarCampos()) {
             if (JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea "
-                    + "eliminar a este usuario?") == JOptionPane.YES_OPTION) {
-                if (this.tablaUsuario.eliminar(usuario)) {
-                    JOptionPane.showMessageDialog(this, "Usuario eliminado");
-                }
+                + "eliminar a este usuario?") == JOptionPane.YES_OPTION) {
+            if (this.tablaUsuario.eliminar(usuario)) {
+                JOptionPane.showMessageDialog(this, "Usuario eliminado");
             }
+        }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -129,7 +130,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -139,20 +140,27 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmEliminarUsuario().setVisible(true);
+                DialogEliminarUsuario dialog = new DialogEliminarUsuario(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -164,7 +172,7 @@ public class FrmEliminarUsuario extends javax.swing.JFrame {
     private javax.swing.JPasswordField passContrasena;
     private javax.swing.JPanel pnlEliminar;
     // End of variables declaration//GEN-END:variables
-
+    
     private boolean validarCampos() {
         Validador validador = new Validador();
         Cifrador cifrador = new Cifrador();

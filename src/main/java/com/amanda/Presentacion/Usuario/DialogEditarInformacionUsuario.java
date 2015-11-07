@@ -9,23 +9,23 @@ import com.amanda.Datos.Usuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Utilidades.Cifrador;
 import com.amanda.Utilidades.Validador;
-import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author camm
  */
-public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
+public class DialogEditarInformacionUsuario extends javax.swing.JDialog {
 
     TablaUsuario tablaUsuario = new TablaUsuario();
-    Usuario usuario = tablaUsuario.buscarPorCedula("1725651630");
-
+    Usuario usuario = tablaUsuario.buscarPorCedula("1003952783");
     /**
-     * Creates new form FrmEditarInformacionUsuario
+     * Creates new form Dialog
      */
-    public FrmEditarInformacionUsuario() {
+    public DialogEditarInformacionUsuario(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
+        
         this.txtCedula.setText(usuario.getCedula());
         this.txtCedula.setEditable(false);
         this.txtCedula.setEnabled(false);
@@ -58,7 +58,7 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         lblCedula = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlEdicionInformacion.setBorder(javax.swing.BorderFactory.createTitledBorder("Editar Información"));
 
@@ -104,7 +104,7 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
                         .addGroup(pnlEdicionInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnAceptar)
                             .addComponent(lblConfirmacion))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
                         .addGroup(pnlEdicionInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(passConfirmacion, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnCancelar)))
@@ -124,8 +124,8 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         );
         pnlEdicionInformacionLayout.setVerticalGroup(
             pnlEdicionInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlEdicionInformacionLayout.createSequentialGroup()
-                .addContainerGap(19, Short.MAX_VALUE)
+            .addGroup(pnlEdicionInformacionLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(pnlEdicionInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCedula)
                     .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -153,7 +153,7 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
                 .addGroup(pnlEdicionInformacionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
-                .addContainerGap())
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -183,16 +183,15 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         if (validarCampos()) {
             if(JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea cambiar "
                 + "esta información?") == JOptionPane.YES_OPTION){
-                this.usuario.setNombre(this.txtNombre.getText());
-                this.usuario.setApellido(this.txtApellido.getText());
-                this.usuario.setContrasena(cifrador
-                    .md5((new String(this.pssNuevaContra.getPassword()))
+            this.usuario.setNombre(this.txtNombre.getText());
+            this.usuario.setApellido(this.txtApellido.getText());
+            this.usuario.setContrasena(cifrador
+                .md5((new String(this.pssNuevaContra.getPassword()))
                     .concat(this.usuario.getCedula())));
 
-                this.tablaUsuario.editar(this.usuario);
-                JOptionPane.showMessageDialog(this, "Éxito");
-                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-            }
+            this.tablaUsuario.editar(this.usuario);
+            JOptionPane.showMessageDialog(this, "Éxito");
+        }
         }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
@@ -203,7 +202,7 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -213,20 +212,28 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmEditarInformacionUsuario().setVisible(true);
+                DialogEditarInformacionUsuario dialog = new DialogEditarInformacionUsuario(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

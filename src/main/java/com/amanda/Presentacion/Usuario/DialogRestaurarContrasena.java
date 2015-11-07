@@ -8,17 +8,17 @@ package com.amanda.Presentacion.Usuario;
 import com.amanda.Datos.Usuario;
 import com.amanda.Logica.TablaUsuario;
 import javax.swing.JOptionPane;
-
 /**
  *
  * @author camm
  */
-public class FrmRestaurarContrasena extends javax.swing.JFrame {
+public class DialogRestaurarContrasena extends javax.swing.JDialog {
 
     /**
-     * Creates new form FrmRestaurarContrasena
+     * Creates new form DialogRestaurarContrasena
      */
-    public FrmRestaurarContrasena() {
+    public DialogRestaurarContrasena(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -31,7 +31,7 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pnlRestaurarContrasena = new javax.swing.JPanel();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         txtResp1 = new javax.swing.JTextField();
@@ -46,9 +46,9 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         txtCedula = new javax.swing.JTextField();
         btnVerificar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Restaurar Contraseña"));
+        pnlRestaurarContrasena.setBorder(javax.swing.BorderFactory.createTitledBorder("Restaurar Contraseña"));
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -80,22 +80,22 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
             }
         });
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+        javax.swing.GroupLayout pnlRestaurarContrasenaLayout = new javax.swing.GroupLayout(pnlRestaurarContrasena);
+        pnlRestaurarContrasena.setLayout(pnlRestaurarContrasenaLayout);
+        pnlRestaurarContrasenaLayout.setHorizontalGroup(
+            pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRestaurarContrasenaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblPreguntaSeguridad1)
                     .addComponent(lblRespuesta1)
                     .addComponent(lblPreguntaSeguridad2)
                     .addComponent(lblRespuesta2)
                     .addComponent(lblCedula))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, 38, Short.MAX_VALUE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtResp1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRestaurarContrasenaLayout.createSequentialGroup()
                         .addComponent(txtCedula)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnVerificar))
@@ -103,39 +103,39 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
                     .addComponent(cmbPregunta2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtResp2))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(pnlRestaurarContrasenaLayout.createSequentialGroup()
                 .addGap(130, 130, 130)
                 .addComponent(btnAceptar)
                 .addGap(49, 49, 49)
                 .addComponent(btnCancelar)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+        pnlRestaurarContrasenaLayout.setVerticalGroup(
+            pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRestaurarContrasenaLayout.createSequentialGroup()
                 .addGap(27, 27, 27)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCedula)
                     .addComponent(txtCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnVerificar))
                 .addGap(29, 29, 29)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbPregunta1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPreguntaSeguridad1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtResp1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRespuesta1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbPregunta2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPreguntaSeguridad2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtResp2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblRespuesta2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(pnlRestaurarContrasenaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAceptar)
                     .addComponent(btnCancelar))
                 .addContainerGap())
@@ -147,19 +147,45 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(pnlRestaurarContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlRestaurarContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        Usuario user;
+        TablaUsuario tablaUsuario = new TablaUsuario();
+        user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
+
+        if (user != null && user.getCedula() != null) {
+            if (user.getResp1().equals(this.txtResp1.getText())
+                && user.getResp2().equals(this.txtResp2.getText())
+                && user.getPreg1() == this.cmbPregunta1.getSelectedIndex()
+                && user.getPreg2() == this.cmbPregunta2.getSelectedIndex()) {
+
+                tablaUsuario.modificarContrasena(user, user.getCedula());
+                JOptionPane.showMessageDialog(this, "Su contraseña actual es "
+                    + user.getCedula() + "\nes aconcejable que la cambie "
+                    + "inmediatamente");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al intentar modificar");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "No se encuentra el usuario con "
+                + "la cédula " + this.txtCedula.getText());
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
         // TODO add your handling code here:
@@ -172,35 +198,9 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         }
         else{
             JOptionPane.showMessageDialog(this, "No se encuentra el usuario con "
-                    + "la cédula " + this.txtCedula.getText());
+                + "la cédula " + this.txtCedula.getText());
         }
     }//GEN-LAST:event_btnVerificarActionPerformed
-
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-        Usuario user;
-        TablaUsuario tablaUsuario = new TablaUsuario();
-        user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
-
-        if (user != null && user.getCedula() != null) {
-            if (user.getResp1().equals(this.txtResp1.getText())
-                    && user.getResp2().equals(this.txtResp2.getText())
-                    && user.getPreg1() == this.cmbPregunta1.getSelectedIndex()
-                    && user.getPreg2() == this.cmbPregunta2.getSelectedIndex()) {
-
-                tablaUsuario.modificarContrasena(user, user.getCedula());
-                JOptionPane.showMessageDialog(this, "Su contraseña actual es "
-                        + user.getCedula() + "\nes aconcejable que la cambie "
-                        + "inmediatamente");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error al intentar modificar");
-            }
-        }
-        else{
-            JOptionPane.showMessageDialog(this, "No se encuentra el usuario con "
-                    + "la cédula " + this.txtCedula.getText());
-        }
-    }//GEN-LAST:event_btnAceptarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -209,7 +209,7 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -219,20 +219,27 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmRestaurarContrasena().setVisible(true);
+                DialogRestaurarContrasena dialog = new DialogRestaurarContrasena(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -243,12 +250,12 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
     private javax.swing.JButton btnVerificar;
     private javax.swing.JComboBox cmbPregunta1;
     private javax.swing.JComboBox cmbPregunta2;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lblCedula;
     private javax.swing.JLabel lblPreguntaSeguridad1;
     private javax.swing.JLabel lblPreguntaSeguridad2;
     private javax.swing.JLabel lblRespuesta1;
     private javax.swing.JLabel lblRespuesta2;
+    private javax.swing.JPanel pnlRestaurarContrasena;
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtResp1;
     private javax.swing.JTextField txtResp2;

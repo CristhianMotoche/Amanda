@@ -15,12 +15,13 @@ import javax.swing.JOptionPane;
  *
  * @author camm
  */
-public class FrmRegistroUsuario extends javax.swing.JFrame {
+public class DialogRegistroUsuario extends javax.swing.JDialog {
 
     /**
-     * Creates new form FrmRegistroUsuario
+     * Creates new form DialogRegistroUsuario
      */
-    public FrmRegistroUsuario() {
+    public DialogRegistroUsuario(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -55,7 +56,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         cmbPregunta2 = new javax.swing.JComboBox();
         txtResp2 = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         pnlRegistro.setBorder(javax.swing.BorderFactory.createTitledBorder("Registro Usuario"));
 
@@ -133,7 +134,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 .addComponent(btnGuardar)
                 .addGap(45, 45, 45)
                 .addComponent(btnCancelar)
-                .addContainerGap(105, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
         pnlRegistroLayout.setVerticalGroup(
             pnlRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +175,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 .addGroup(pnlRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblResp2)
                     .addComponent(txtResp2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pnlRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
@@ -205,8 +206,6 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
         if (camposValidos()) {
             ingresarNuevoUsuario();
-        } else {
-            JOptionPane.showMessageDialog(this, "Error en el ingreso de datos");
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
@@ -217,7 +216,7 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -227,20 +226,27 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FrmRegistroUsuario().setVisible(true);
+                DialogRegistroUsuario dialog = new DialogRegistroUsuario(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
@@ -299,12 +305,44 @@ public class FrmRegistroUsuario extends javax.swing.JFrame {
     }
 
     private boolean camposValidos() {
-        Validador validador = new Validador();
+        
         String contrasena = new String(this.passContrasena.getPassword());
         String confirmacion = new String(this.passConfirmacion.getPassword());
 
-        return validador.cedulaValida(this.txtCedula.getText())
-                && validador.contrasenaValida(contrasena)
-                && confirmacion.equals(contrasena);
+        return validarCedula()
+                && validarContrasena(contrasena)
+                && validarCoincidencia(contrasena, confirmacion);
+    }
+    
+    private boolean validarCedula() {
+        Validador validador = new Validador();
+        if (validador.cedulaValida(this.txtCedula.getText())){
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "La cédula no es válida");
+            return false;
+        }
+    }
+    
+    private boolean validarContrasena(String contrasena) {
+        Validador validador = new Validador();
+        if (validador.contrasenaValida(contrasena)){
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "La contraseña no es válida");
+            return false;
+        }
+    }
+
+    private boolean validarCoincidencia(String contrasena, String confirmacion) {
+        if (confirmacion.equals(contrasena)) {
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coincide");
+            return false;
+        }
     }
 }
