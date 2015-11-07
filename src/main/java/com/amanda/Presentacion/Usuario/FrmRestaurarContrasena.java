@@ -163,9 +163,8 @@ public class FrmRestaurarContrasena extends javax.swing.JFrame {
 
     private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
         // TODO add your handling code here:
-        Usuario user;
         TablaUsuario tablaUsuario = new TablaUsuario();
-        user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
+        Usuario user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
 
         if (user != null && user.getCedula() != null) {
             this.cmbPregunta1.setSelectedIndex(user.getPreg1());

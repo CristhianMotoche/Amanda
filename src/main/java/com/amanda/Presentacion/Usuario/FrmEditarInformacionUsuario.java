@@ -5,17 +5,32 @@
  */
 package com.amanda.Presentacion.Usuario;
 
+import com.amanda.Datos.Usuario;
+import com.amanda.Logica.TablaUsuario;
+import com.amanda.Utilidades.Cifrador;
+import com.amanda.Utilidades.Validador;
+import java.awt.event.WindowEvent;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author camm
  */
 public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
 
+    TablaUsuario tablaUsuario = new TablaUsuario();
+    Usuario usuario = tablaUsuario.buscarPorCedula("1725651630");
+
     /**
      * Creates new form FrmEditarInformacionUsuario
      */
     public FrmEditarInformacionUsuario() {
         initComponents();
+        this.txtCedula.setText(usuario.getCedula());
+        this.txtCedula.setEditable(false);
+        this.txtCedula.setEnabled(false);
+        this.txtNombre.setText(usuario.getNombre());
+        this.txtApellido.setText(usuario.getApellido());
     }
 
     /**
@@ -64,12 +79,15 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         lblNombre.setText("Nombre");
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAceptarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
 
         lblCedula.setText("Cédula");
-
-        txtCedula.setEditable(false);
 
         javax.swing.GroupLayout pnlEdicionInformacionLayout = new javax.swing.GroupLayout(pnlEdicionInformacion);
         pnlEdicionInformacion.setLayout(pnlEdicionInformacionLayout);
@@ -158,6 +176,26 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+        Cifrador cifrador = new Cifrador();
+
+        if (validarCampos()) {
+            if(JOptionPane.showConfirmDialog(this, "¿Esta seguro de que desea cambiar "
+                + "esta información?") == JOptionPane.YES_OPTION){
+                this.usuario.setNombre(this.txtNombre.getText());
+                this.usuario.setApellido(this.txtApellido.getText());
+                this.usuario.setContrasena(cifrador
+                    .md5((new String(this.pssNuevaContra.getPassword()))
+                    .concat(this.usuario.getCedula())));
+
+                this.tablaUsuario.editar(this.usuario);
+                JOptionPane.showMessageDialog(this, "Éxito");
+                this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+            }
+        }
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -165,7 +203,7 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -210,4 +248,49 @@ public class FrmEditarInformacionUsuario extends javax.swing.JFrame {
     private javax.swing.JTextField txtCedula;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
+
+    private boolean validarCampos() {
+        String nueva = new String(this.pssNuevaContra.getPassword());
+        String confirmacion = new String(this.passConfirmacion.getPassword());
+
+        return contrasenaActualCorrecta()
+                && constrasenaValida(nueva)
+                && constrasenasCoinciden(nueva, confirmacion);
+    }
+
+    private boolean constrasenaValida(String constrasena){
+        Validador validador = new Validador();
+        if (validador.contrasenaValida(constrasena)) {
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "La contraseña nueva no es valida");
+            return false;
+        }
+    }
+
+    private boolean constrasenasCoinciden(String nueva, String confirmacion){
+        if(nueva.equals(confirmacion)) {
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Las contraseñas no coinciden");
+            return false;
+        }
+    }
+
+    private boolean contrasenaActualCorrecta(){
+        Cifrador cifrador = new Cifrador();
+        String hashContrasena = cifrador
+            .md5((new String(this.passContrasena.getPassword()))
+            .concat(this.txtCedula.getText()));
+
+        if(hashContrasena.equals(usuario.getContrasena())){
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "La contraseña actual no es correcta");
+            return false;
+        }
+    }
 }

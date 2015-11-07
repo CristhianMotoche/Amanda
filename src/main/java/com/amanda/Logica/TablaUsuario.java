@@ -7,6 +7,7 @@ package com.amanda.Logica;
 
 import com.amanda.Datos.Datos;
 import com.amanda.Datos.Usuario;
+import com.amanda.Utilidades.Cifrador;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -92,6 +93,7 @@ public class TablaUsuario extends Tabla{
                 usuario.setCedula(resultado.getString("CI"));
                 usuario.setNombre(resultado.getString("NOMBRE"));
                 usuario.setApellido(resultado.getString("APELLIDO"));
+                usuario.setContrasena(resultado.getString("CONTRASENA"));
                 usuario.setPreg1(resultado.getInt("PREGUNTA1"));
                 usuario.setPreg2(resultado.getInt("PREGUNTA2"));
                 usuario.setResp1(resultado.getString("RESPUESTA1"));
@@ -105,7 +107,8 @@ public class TablaUsuario extends Tabla{
     }
 
     public void modificarContrasena(Usuario user, String contrasena) {
-        user.setContrasena(contrasena);
+        Cifrador cifrador = new Cifrador();
+        user.setContrasena(cifrador.md5(contrasena.concat(contrasena)));
         editar(user);
     }
 }
