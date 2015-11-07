@@ -14,6 +14,8 @@ public class Usuario extends Datos{
     private String cedula;
     private String apellido;
     private String contrasena;
+    private int preg1;
+    private int preg2;
     private String resp1;
     private String resp2;
 
@@ -46,6 +48,14 @@ public class Usuario extends Datos{
         return resp2;
     }
 
+    public int getPreg1() {
+        return preg1;
+    }
+
+    public int getPreg2() {
+        return preg2;
+    }
+
     // Setter
     public void setNombre(String nombre) {
         this.nombre = nombre;
@@ -69,5 +79,13 @@ public class Usuario extends Datos{
 
     public void setResp2(String resp2) {
         this.resp2 = resp2;
+    }
+
+    public void setPreg1(int preg1) {
+        this.preg1 = preg1;
+    }
+
+    public void setPreg2(int preg2) {
+        this.preg2 = preg2;
     }
 }
