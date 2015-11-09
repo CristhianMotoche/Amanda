@@ -8,12 +8,16 @@ import javax.swing.table.DefaultTableModel;
 public class TablaFactura extends Tabla {
        
     @Override
-    public DefaultTableModel mostrar(){
+    public DefaultTableModel mostrar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public DefaultTableModel mostrar(int idUsuario){
         String cabecera[] = {"IdFactura", "IdUsuario", "IdProveedor", "IdLimite", "Número", "Fecha", "Alimentación", "Educación", "Salud", "Vestido", "Vivienda", "Otros", "Gasto de negocio", "Total sin IVA", "IVA", "Total"};
         String registro[] = new String[16];
         DefaultTableModel modelo = new DefaultTableModel(null, cabecera);
         totalregistros = 0;
-        cadSQL = "select * from factura";
+        cadSQL = "select * from factura where idusuario = " + idUsuario;
         try {
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(cadSQL);
@@ -128,22 +132,38 @@ public class TablaFactura extends Tabla {
                 ret = rs.getInt("idproveedor");
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error 'Mostrar' " + e);
+            JOptionPane.showMessageDialog(null, "Error 'Contar' " + e);
         }
         return ret;
     }
     
-    /*public boolean eliminarPorIdLimite(Datos dts){
-        DatosLimiteGasto dlg = (DatosLimiteGasto)dts;
+    public int contarFacturasPorLimiteDeGasto(Datos dts){
+        DatosFactura df = (DatosFactura)dts;
+        int ret = -1;
+        cadSQL = "select count(idfactura) as limiteGasto from factura where idlimite = " + df.IdLimite;
+        try {
+            Statement st = con.createStatement();
+            ResultSet rs = st.executeQuery(cadSQL);
+            while (rs.next()){
+                ret = rs.getInt("limiteGasto");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error 'Contar' " + e);
+        }
+        return ret;
+    }
+    
+    public boolean eliminarPorIdLimite(Datos dts){
+        DatosFactura df = (DatosFactura)dts;
         boolean ret = false;
         try {
-            CadSQL = "DELETE FROM FACTURA WHERE idLimite = ?";
-            PreparedStatement pst = cn.prepareStatement(CadSQL);
-            pst.setInt(1, dlg.idLimite);
+            cadSQL = "DELETE FROM FACTURA WHERE idLimite = ?";
+            PreparedStatement pst = con.prepareStatement(cadSQL);
+            pst.setInt(1, df.IdLimite);
             if (pst.executeUpdate()!= 0) ret = true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error 'Eliminar' " + e);
         }
         return ret;
-    }*/
+    }
 }

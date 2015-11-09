@@ -9,12 +9,12 @@ package com.amanda.Presentacion;
  *
  * @author patricia
  */
-public class jdLimiteGastoAnio extends javax.swing.JDialog {
+public class FrmLimiteGastoAnio extends javax.swing.JDialog {
 
     /**
      * Creates new form jdLimiteGastoAnio
      */
-    public jdLimiteGastoAnio(java.awt.Frame parent, boolean modal) {
+    public FrmLimiteGastoAnio(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         modificarLabel(true);
@@ -161,20 +161,21 @@ public class jdLimiteGastoAnio extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(jdLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(jdLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(jdLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(jdLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmLimiteGastoAnio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                jdLimiteGastoAnio dialog = new jdLimiteGastoAnio(new javax.swing.JFrame(), true);
+                FrmLimiteGastoAnio dialog = new FrmLimiteGastoAnio(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

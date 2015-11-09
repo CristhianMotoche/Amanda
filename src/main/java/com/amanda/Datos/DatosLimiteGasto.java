@@ -1,21 +1,21 @@
 package com.amanda.Datos;
 
-public class LimiteGastos extends Datos{
+public class DatosLimiteGasto extends Datos{
     public int idLimite;
-    public int anio;
+    public int año;
     public double alimentacion;
     public double educacion;
     public double salud;
     public double vestido;
     public double vivienda;
 
-    public LimiteGastos() {
+    public DatosLimiteGasto() {
     }
 
     
-    public LimiteGastos(int idLimite, int anio, double alimentacion, double educacion, double salud, double vestido, double vivienda) {
+    public DatosLimiteGasto(int idLimite, int anio, double alimentacion, double educacion, double salud, double vestido, double vivienda) {
         this.idLimite = idLimite;
-        this.anio = anio;
+        this.año = anio;
         this.alimentacion = alimentacion;
         this.educacion = educacion;
         this.salud = salud;
@@ -28,7 +28,7 @@ public class LimiteGastos extends Datos{
     }
 
     public int getAnio() {
-        return anio;
+        return año;
     }
 
     public double getAlimentacion() {
@@ -56,7 +56,7 @@ public class LimiteGastos extends Datos{
     }
 
     public void setAnio(int anio) {
-        this.anio = anio;
+        this.año = anio;
     }
 
     public void setAlimentacion(double alimentacion) {

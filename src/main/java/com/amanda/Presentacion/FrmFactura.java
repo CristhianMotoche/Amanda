@@ -1,33 +1,45 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package com.amanda.Presentacion;
 
 import com.amanda.Datos.*;
 import com.amanda.Logica.*;
 import java.sql.Date;
+import java.util.Calendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-public class frmFactura extends javax.swing.JFrame {
+public class FrmFactura extends javax.swing.JDialog {
     private String accion;
-    private int IdUsuario;
+    private int idUsuario, idFactura, idLimite, idProveedor;
     
-    public frmFactura() {
+    public FrmFactura(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
-        lblRUC.setText("");
+         setLocationRelativeTo(null);
+        gridProveedor.setVisible(false);
         dateFechaFactura.setMaxSelectableDate(new java.util.Date());
         accion = "";
-        IdUsuario = -1;
-        mostrar();
+        idUsuario = -1;
+        idFactura = -1;
+        idProveedor = -1;
+        idLimite = -1;
+        mostrarProveedores("", "ruc"); 
     }
     
-    public void setIdUsuario(int idusr){
-        IdUsuario = idusr;
+    
+    public void setIdUsuario(int idUsuario){
+        this.idUsuario = idUsuario;
     }
     
-    private void mostrar(){
+    public void mostrar(){
         try {
             DefaultTableModel modelo;
             TablaFactura tf = new TablaFactura();
-            modelo = tf.mostrar();
+            modelo = tf.mostrar(idUsuario);
             gridFacturas.setModel(modelo);
             ocultarColumas();
             lblTotalRegs.setText(Integer.toString(tf.totalregistros));
@@ -36,8 +48,21 @@ public class frmFactura extends javax.swing.JFrame {
         }
     }
     
+    public void mostrarProveedores(String cad, String busquedaPor){
+        try {
+            DefaultTableModel modelo;
+            TablaProveedor tp = new TablaProveedor();
+            modelo = tp.miniMostrar(cad, busquedaPor);
+            gridProveedor.setModel(modelo);
+            gridProveedor.getColumnModel().getColumn(0).setMaxWidth(0);
+            gridProveedor.getColumnModel().getColumn(0).setMinWidth(0);
+            gridProveedor.getColumnModel().getColumn(0).setPreferredWidth(0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error 'Poner en tabla' " + e);
+        }
+    }
+    
     private void ocultarColumas(){
-        //ocultar la columna del idusuario
         for (int i = 0; i < 4; i++){
             gridFacturas.getColumnModel().getColumn(i).setMaxWidth(0);
             gridFacturas.getColumnModel().getColumn(i).setMinWidth(0);
@@ -45,16 +70,23 @@ public class frmFactura extends javax.swing.JFrame {
         }
     }
     
-    private void habilitarModificacion(boolean estado){
+    private void habilitarModificacionParte1(boolean estado){
+        cmdComprobar.setEnabled(estado);
         cmdNuevo.setEnabled(!estado);
-        cmdGuardar.setEnabled(estado);
         cmdCancelar.setEnabled(estado);
         cmdEditar.setEnabled(!estado);
         cmdEliminar.setEnabled(!estado);
         gridFacturas.setVisible(!estado);
-        cmbProveedor.setEnabled(estado);
+        gridProveedor.setVisible(estado);  
+        if (estado) mostrarProveedores(txtRUCProveedor.getText().trim(), "ruc"); 
+        cmdBuscarRUC.setEnabled(estado);
+        txtRUCProveedor.setEnabled(estado);
         txtNumFactura.setEnabled(estado);
         dateFechaFactura.setEnabled(estado);
+    }
+    
+        private void habilitarModificacionParte2(boolean estado){
+        cmdGuardar.setEnabled(estado);
         txtValAlimentacion.setEnabled(estado);
         txtValEducacion.setEnabled(estado);
         txtValGastoDeNegocio.setEnabled(estado);
@@ -102,6 +134,9 @@ public class frmFactura extends javax.swing.JFrame {
         txtTotalVestimenta.setText("0.0");
         txtTotalVivienda.setText("0.0");
         txtIVA.setText("12");    
+        idFactura = -1;
+        idProveedor = -1;
+        idLimite = -1;
     }
     
      private boolean validarCajas(String cad){
@@ -124,10 +159,22 @@ public class frmFactura extends javax.swing.JFrame {
         txtTotalNoDeducible.setText(String.valueOf(Double.parseDouble(txtTotalGastoNegocio.getText()) + Double.parseDouble(txtTotalOtrosGastos.getText())));
     }
     
+    public int obtenerIdLimiteGasto() {
+        int ret = -1;
+        if (dateFechaFactura.getDate() != null) {
+            Calendar fecha = dateFechaFactura.getCalendar();
+            DatosLimiteGasto dlg = new DatosLimiteGasto();
+            dlg.año = fecha.get(Calendar.YEAR);
+            ret = (new TablaLimiteGasto()).idLimiteDesdeAño(dlg);
+        } else ret = -2;
+        return ret;
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTotalRegs = new javax.swing.JLabel();
         grpDetalleGastos = new javax.swing.JPanel();
         lblAlimentacion = new javax.swing.JLabel();
         lblEducacion = new javax.swing.JLabel();
@@ -166,14 +213,6 @@ public class frmFactura extends javax.swing.JFrame {
         txtValSalud = new javax.swing.JTextField();
         txtValEducacion = new javax.swing.JTextField();
         txtValAlimentacion = new javax.swing.JTextField();
-        grpInfoGeneral = new javax.swing.JPanel();
-        cmbProveedor = new javax.swing.JComboBox();
-        lblRUC = new javax.swing.JLabel();
-        lblEqProveedor = new javax.swing.JLabel();
-        lblEqNumFactura = new javax.swing.JLabel();
-        txtNumFactura = new javax.swing.JTextField();
-        lblEqFecha = new javax.swing.JLabel();
-        dateFechaFactura = new com.toedter.calendar.JDateChooser();
         grpTotales = new javax.swing.JPanel();
         lblEqDeducible = new javax.swing.JLabel();
         lblEqNoDeducible = new javax.swing.JLabel();
@@ -189,13 +228,26 @@ public class frmFactura extends javax.swing.JFrame {
         cmdCancelar = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         gridFacturas = new javax.swing.JTable();
+        grpInfoGeneral = new javax.swing.JPanel();
+        lblEqNumFactura = new javax.swing.JLabel();
+        txtNumFactura = new javax.swing.JTextField();
+        lblEqFecha = new javax.swing.JLabel();
+        dateFechaFactura = new com.toedter.calendar.JDateChooser();
+        cmdComprobar = new javax.swing.JButton();
+        grpInfoGeneral1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        gridProveedor = new javax.swing.JTable();
+        txtRUCProveedor = new javax.swing.JTextField();
+        cmdBuscarRUC = new javax.swing.JButton();
+        lblEqDeducible1 = new javax.swing.JLabel();
         cmdNuevo = new javax.swing.JButton();
         cmdEditar = new javax.swing.JButton();
         cmdEliminar = new javax.swing.JButton();
-        lblTotalRegs = new javax.swing.JLabel();
-        cmdEliminar1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Facturas");
+
+        lblTotalRegs.setText("Total de registros: 0");
 
         grpDetalleGastos.setBorder(javax.swing.BorderFactory.createTitledBorder("Detalle de gastos"));
 
@@ -437,7 +489,7 @@ public class frmFactura extends javax.swing.JFrame {
                             .addGroup(grpDetalleGastosLayout.createSequentialGroup()
                                 .addGap(22, 22, 22)
                                 .addComponent(lblEqTotalDeducibles)
-                                .addGap(0, 188, Short.MAX_VALUE))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(grpDetalleGastosLayout.createSequentialGroup()
                         .addGroup(grpDetalleGastosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(grpDetalleGastosLayout.createSequentialGroup()
@@ -520,70 +572,6 @@ public class frmFactura extends javax.swing.JFrame {
                     .addComponent(txtValOtros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        grpInfoGeneral.setBorder(javax.swing.BorderFactory.createTitledBorder("Informacíon general"));
-
-        cmbProveedor.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        cmbProveedor.setEnabled(false);
-
-        lblRUC.setText("[RUC]");
-
-        lblEqProveedor.setText("Proveedor:");
-
-        lblEqNumFactura.setText("N° factura:");
-
-        txtNumFactura.setEnabled(false);
-        txtNumFactura.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNumFacturaActionPerformed(evt);
-            }
-        });
-
-        lblEqFecha.setText("Fecha:");
-
-        dateFechaFactura.setEnabled(false);
-
-        javax.swing.GroupLayout grpInfoGeneralLayout = new javax.swing.GroupLayout(grpInfoGeneral);
-        grpInfoGeneral.setLayout(grpInfoGeneralLayout);
-        grpInfoGeneralLayout.setHorizontalGroup(
-            grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(grpInfoGeneralLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEqProveedor)
-                    .addComponent(lblEqNumFactura)
-                    .addComponent(lblEqFecha))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(grpInfoGeneralLayout.createSequentialGroup()
-                        .addComponent(lblRUC)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(grpInfoGeneralLayout.createSequentialGroup()
-                        .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtNumFactura)
-                            .addComponent(cmbProveedor, javax.swing.GroupLayout.Alignment.LEADING, 0, 479, Short.MAX_VALUE)
-                            .addComponent(dateFechaFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        grpInfoGeneralLayout.setVerticalGroup(
-            grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(grpInfoGeneralLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEqProveedor))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblRUC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNumFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblEqNumFactura))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblEqFecha)
-                    .addComponent(dateFechaFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31))
-        );
-
         grpTotales.setBorder(javax.swing.BorderFactory.createTitledBorder("Totales"));
 
         lblEqDeducible.setText("Deducible:");
@@ -648,7 +636,7 @@ public class frmFactura extends javax.swing.JFrame {
                             .addComponent(lblEqNoDeducible))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(grpTotalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTotalDeducible, javax.swing.GroupLayout.DEFAULT_SIZE, 242, Short.MAX_VALUE)
+                            .addComponent(txtTotalDeducible)
                             .addComponent(txtTotalNoDeducible)))
                     .addGroup(grpTotalesLayout.createSequentialGroup()
                         .addGroup(grpTotalesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -724,6 +712,133 @@ public class frmFactura extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(gridFacturas);
 
+        grpInfoGeneral.setBorder(javax.swing.BorderFactory.createTitledBorder("Informacíon general"));
+
+        lblEqNumFactura.setText("N° factura:");
+
+        txtNumFactura.setEnabled(false);
+        txtNumFactura.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNumFacturaActionPerformed(evt);
+            }
+        });
+
+        lblEqFecha.setText("Fecha:");
+
+        dateFechaFactura.setEnabled(false);
+
+        cmdComprobar.setText("Comprobar");
+        cmdComprobar.setEnabled(false);
+        cmdComprobar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdComprobarActionPerformed(evt);
+            }
+        });
+
+        grpInfoGeneral1.setBorder(javax.swing.BorderFactory.createTitledBorder("Proveedor"));
+
+        gridProveedor.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        gridProveedor.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                gridProveedorMouseClicked(evt);
+            }
+        });
+        jScrollPane2.setViewportView(gridProveedor);
+
+        txtRUCProveedor.setEnabled(false);
+
+        cmdBuscarRUC.setText("Buscar");
+        cmdBuscarRUC.setEnabled(false);
+        cmdBuscarRUC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmdBuscarRUCActionPerformed(evt);
+            }
+        });
+
+        lblEqDeducible1.setText("RUC:");
+
+        javax.swing.GroupLayout grpInfoGeneral1Layout = new javax.swing.GroupLayout(grpInfoGeneral1);
+        grpInfoGeneral1.setLayout(grpInfoGeneral1Layout);
+        grpInfoGeneral1Layout.setHorizontalGroup(
+            grpInfoGeneral1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grpInfoGeneral1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblEqDeducible1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtRUCProveedor)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cmdBuscarRUC)
+                .addContainerGap())
+            .addGroup(grpInfoGeneral1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(grpInfoGeneral1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
+        grpInfoGeneral1Layout.setVerticalGroup(
+            grpInfoGeneral1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grpInfoGeneral1Layout.createSequentialGroup()
+                .addGroup(grpInfoGeneral1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtRUCProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEqDeducible1)
+                    .addComponent(cmdBuscarRUC))
+                .addGap(0, 101, Short.MAX_VALUE))
+            .addGroup(grpInfoGeneral1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, grpInfoGeneral1Layout.createSequentialGroup()
+                    .addContainerGap(32, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()))
+        );
+
+        javax.swing.GroupLayout grpInfoGeneralLayout = new javax.swing.GroupLayout(grpInfoGeneral);
+        grpInfoGeneral.setLayout(grpInfoGeneralLayout);
+        grpInfoGeneralLayout.setHorizontalGroup(
+            grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grpInfoGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(grpInfoGeneral1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(grpInfoGeneralLayout.createSequentialGroup()
+                        .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEqNumFactura)
+                            .addComponent(lblEqFecha))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txtNumFactura, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, grpInfoGeneralLayout.createSequentialGroup()
+                                .addComponent(dateFechaFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(cmdComprobar)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        grpInfoGeneralLayout.setVerticalGroup(
+            grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(grpInfoGeneralLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(grpInfoGeneral1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtNumFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblEqNumFactura))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(grpInfoGeneralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblEqFecha)
+                    .addComponent(dateFechaFactura, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmdComprobar))
+                .addContainerGap())
+        );
+
         cmdNuevo.setText("Nuevo");
         cmdNuevo.setName(""); // NOI18N
         cmdNuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -746,45 +861,35 @@ public class frmFactura extends javax.swing.JFrame {
             }
         });
 
-        lblTotalRegs.setText("Total de registros: 0");
-
-        cmdEliminar1.setText("Eliminar");
-        cmdEliminar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmdEliminar1ActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(grpDetalleGastos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(grpTotales, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(grpInfoGeneral, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(grpDetalleGastos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(cmdNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(cmdGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(cmdCancelar)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmdCancelar))
+                    .addComponent(grpTotales, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(grpInfoGeneral, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblTotalRegs)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(cmdEditar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(cmdEliminar1)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                                .addComponent(cmdEliminar))
+                            .addComponent(lblTotalRegs))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -795,16 +900,15 @@ public class frmFactura extends javax.swing.JFrame {
                     .addComponent(cmdGuardar)
                     .addComponent(cmdCancelar)
                     .addComponent(cmdEditar)
-                    .addComponent(cmdEliminar)
-                    .addComponent(cmdEliminar1))
+                    .addComponent(cmdEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(grpInfoGeneral, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(grpInfoGeneral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(grpDetalleGastos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(grpTotales, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(grpTotales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -815,124 +919,12 @@ public class frmFactura extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNumFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumFacturaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNumFacturaActionPerformed
-
-    private void txtTotalDeducibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalDeducibleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalDeducibleActionPerformed
-
-    private void txtTotalNoDeducibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalNoDeducibleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalNoDeducibleActionPerformed
-
-    private void txtTotalSinIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalSinIVAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalSinIVAActionPerformed
-
-    private void txtIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIVAActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtIVAActionPerformed
-
-    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalActionPerformed
-
-    private void cmdCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCancelarActionPerformed
-        habilitarModificacion(false);
-        limpiar();
-        accion = "";
-    }//GEN-LAST:event_cmdCancelarActionPerformed
-
-    private void cmdGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGuardarActionPerformed
-        DatosFactura df = new DatosFactura();
-        TablaFactura tf = new TablaFactura();
-        df.IdUsuario = IdUsuario;
-        df.IdProveedor = 1;
-        df.Numero = txtNumFactura.getText().trim();
-        df.Fecha = new java.sql.Date(dateFechaFactura.getDate().getTime());
-        df.SumAlimentacion = Double.parseDouble(txtTotalAlimentacion.getText().trim());
-        df.SumEducacion = Double.parseDouble(txtTotalEducacion.getText().trim());
-        df.SumSalud = Double.parseDouble(txtTotalSalud.getText().trim());
-        df.SumVestido = Double.parseDouble(txtTotalVestimenta.getText().trim());
-        df.SumVivienda = Double.parseDouble(txtTotalVivienda.getText().trim());
-        df.SumOtros = Double.parseDouble(txtTotalOtrosGastos.getText().trim());
-        df.SumGastosNegocio = Double.parseDouble(txtTotalGastoNegocio.getText().trim());
-        df.TotalSinIVA = Double.parseDouble(txtTotalSinIVA.getText().trim());
-        df.IVA = Double.parseDouble(txtIVA.getText().trim());
-        df.Total = Double.parseDouble(txtTotal.getText().trim());
-        boolean resultado = false;
-        switch(accion){
-            case "nuevo":
-                resultado = tf.insertar(df);
-                break;
-            case "editar":
-                resultado = tf.editar(df);
-                break;
-        }
-        if (resultado){
-            JOptionPane.showMessageDialog(null, "Operación completada");
-            habilitarModificacion(false);
-            limpiar();
-            mostrar();
-        } else {
-            JOptionPane.showMessageDialog(null, "Error. La operación no ha podido ser ejecutada");
-        }
-    }//GEN-LAST:event_cmdGuardarActionPerformed
-
     private void cmdMasAlimentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasAlimentacionActionPerformed
         if (validarCajas(txtValAlimentacion.getText()))
-            txtTotalAlimentacion.setText(String.valueOf(Double.parseDouble(txtTotalAlimentacion.getText()) + Double.parseDouble(txtValAlimentacion.getText())));
+        txtTotalAlimentacion.setText(String.valueOf(Double.parseDouble(txtTotalAlimentacion.getText()) + Double.parseDouble(txtValAlimentacion.getText())));
         txtValAlimentacion.setText("0");
         calcularTotalDeducible();
     }//GEN-LAST:event_cmdMasAlimentacionActionPerformed
-
-    private void txtTotalVestimentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalVestimentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTotalVestimentaActionPerformed
-
-    private void cmdMasEducacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasEducacionActionPerformed
-        if (validarCajas(txtValEducacion.getText()))
-            txtTotalEducacion.setText(String.valueOf(Double.parseDouble(txtTotalEducacion.getText()) + Double.parseDouble(txtValEducacion.getText())));
-        txtValEducacion.setText("0");
-        calcularTotalDeducible();
-    }//GEN-LAST:event_cmdMasEducacionActionPerformed
-
-    private void cmdMasSaludActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasSaludActionPerformed
-        if (validarCajas(txtValSalud.getText()))
-            txtTotalSalud.setText(String.valueOf(Double.parseDouble(txtTotalSalud.getText()) + Double.parseDouble(txtValSalud.getText())));
-        txtValSalud.setText("0");
-        calcularTotalDeducible();
-    }//GEN-LAST:event_cmdMasSaludActionPerformed
-
-    private void cmdMasVestimentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasVestimentaActionPerformed
-        if (validarCajas(txtValVestimenta.getText()))
-            txtTotalVestimenta.setText(String.valueOf(Double.parseDouble(txtTotalVestimenta.getText()) + Double.parseDouble(txtValVestimenta.getText())));
-        txtValVestimenta.setText("0");
-        calcularTotalDeducible();
-    }//GEN-LAST:event_cmdMasVestimentaActionPerformed
-
-    private void cmdMasViviendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasViviendaActionPerformed
-        if (validarCajas(txtValVivienda.getText()))
-            txtTotalVivienda.setText(String.valueOf(Double.parseDouble(txtTotalVivienda.getText()) + Double.parseDouble(txtValVivienda.getText())));
-        txtValVivienda.setText("0");
-        calcularTotalDeducible();
-    }//GEN-LAST:event_cmdMasViviendaActionPerformed
-
-    private void cmdMasGastoNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasGastoNegocioActionPerformed
-        if (validarCajas(txtValGastoDeNegocio.getText()))
-            txtTotalGastoNegocio.setText(String.valueOf(Double.parseDouble(txtTotalGastoNegocio.getText()) + Double.parseDouble(txtValGastoDeNegocio.getText())));
-        txtValGastoDeNegocio.setText("0");
-        calcularTotalNoDeducible();
-    }//GEN-LAST:event_cmdMasGastoNegocioActionPerformed
-
-    private void cmdMasOtrosGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasOtrosGastosActionPerformed
-        if (validarCajas(txtValOtros.getText()))
-            txtTotalOtrosGastos.setText(String.valueOf(Double.parseDouble(txtTotalOtrosGastos.getText()) + Double.parseDouble(txtValOtros.getText())));
-        txtValOtros.setText("0");
-        calcularTotalNoDeducible();
-    }//GEN-LAST:event_cmdMasOtrosGastosActionPerformed
 
     private void cmdMenosAlimentacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosAlimentacionActionPerformed
         if (validarCajas(txtValAlimentacion.getText())){
@@ -954,6 +946,13 @@ public class frmFactura extends javax.swing.JFrame {
         txtValEducacion.setText("0");
     }//GEN-LAST:event_cmdMenosEducacionActionPerformed
 
+    private void cmdMasEducacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasEducacionActionPerformed
+        if (validarCajas(txtValEducacion.getText()))
+        txtTotalEducacion.setText(String.valueOf(Double.parseDouble(txtTotalEducacion.getText()) + Double.parseDouble(txtValEducacion.getText())));
+        txtValEducacion.setText("0");
+        calcularTotalDeducible();
+    }//GEN-LAST:event_cmdMasEducacionActionPerformed
+
     private void cmdMenosSaludActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosSaludActionPerformed
         if (validarCajas(txtValSalud.getText())){
             double resto = Double.parseDouble(txtTotalSalud.getText()) - Double.parseDouble(txtValSalud.getText());
@@ -963,6 +962,13 @@ public class frmFactura extends javax.swing.JFrame {
         }
         txtValSalud.setText("0");
     }//GEN-LAST:event_cmdMenosSaludActionPerformed
+
+    private void cmdMasSaludActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasSaludActionPerformed
+        if (validarCajas(txtValSalud.getText()))
+        txtTotalSalud.setText(String.valueOf(Double.parseDouble(txtTotalSalud.getText()) + Double.parseDouble(txtValSalud.getText())));
+        txtValSalud.setText("0");
+        calcularTotalDeducible();
+    }//GEN-LAST:event_cmdMasSaludActionPerformed
 
     private void cmdMenosVestimentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosVestimentaActionPerformed
         if (validarCajas(txtValVestimenta.getText())){
@@ -974,6 +980,13 @@ public class frmFactura extends javax.swing.JFrame {
         txtValVestimenta.setText("0");
     }//GEN-LAST:event_cmdMenosVestimentaActionPerformed
 
+    private void cmdMasVestimentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasVestimentaActionPerformed
+        if (validarCajas(txtValVestimenta.getText()))
+        txtTotalVestimenta.setText(String.valueOf(Double.parseDouble(txtTotalVestimenta.getText()) + Double.parseDouble(txtValVestimenta.getText())));
+        txtValVestimenta.setText("0");
+        calcularTotalDeducible();
+    }//GEN-LAST:event_cmdMasVestimentaActionPerformed
+
     private void cmdMenosViviendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosViviendaActionPerformed
         if (validarCajas(txtValVivienda.getText())){
             double resto = Double.parseDouble(txtTotalVivienda.getText()) - Double.parseDouble(txtValVivienda.getText());
@@ -983,6 +996,17 @@ public class frmFactura extends javax.swing.JFrame {
         }
         txtValVivienda.setText("0");
     }//GEN-LAST:event_cmdMenosViviendaActionPerformed
+
+    private void cmdMasViviendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasViviendaActionPerformed
+        if (validarCajas(txtValVivienda.getText()))
+        txtTotalVivienda.setText(String.valueOf(Double.parseDouble(txtTotalVivienda.getText()) + Double.parseDouble(txtValVivienda.getText())));
+        txtValVivienda.setText("0");
+        calcularTotalDeducible();
+    }//GEN-LAST:event_cmdMasViviendaActionPerformed
+
+    private void txtTotalVestimentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalVestimentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalVestimentaActionPerformed
 
     private void cmdMenosGastoNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosGastoNegocioActionPerformed
         if (validarCajas(txtValGastoDeNegocio.getText())){
@@ -994,6 +1018,13 @@ public class frmFactura extends javax.swing.JFrame {
         txtValGastoDeNegocio.setText("0");
     }//GEN-LAST:event_cmdMenosGastoNegocioActionPerformed
 
+    private void cmdMasGastoNegocioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasGastoNegocioActionPerformed
+        if (validarCajas(txtValGastoDeNegocio.getText()))
+        txtTotalGastoNegocio.setText(String.valueOf(Double.parseDouble(txtTotalGastoNegocio.getText()) + Double.parseDouble(txtValGastoDeNegocio.getText())));
+        txtValGastoDeNegocio.setText("0");
+        calcularTotalNoDeducible();
+    }//GEN-LAST:event_cmdMasGastoNegocioActionPerformed
+
     private void cmdMenosOtrosGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMenosOtrosGastosActionPerformed
         if (validarCajas(txtValOtros.getText())){
             double resto = Double.parseDouble(txtTotalOtrosGastos.getText()) - Double.parseDouble(txtValOtros.getText());
@@ -1004,23 +1035,89 @@ public class frmFactura extends javax.swing.JFrame {
         txtValOtros.setText("0");
     }//GEN-LAST:event_cmdMenosOtrosGastosActionPerformed
 
-    private void cmdNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdNuevoActionPerformed
-        limpiar();
-        accion = "nuevo";
-        habilitarModificacion(true);
-    }//GEN-LAST:event_cmdNuevoActionPerformed
+    private void cmdMasOtrosGastosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdMasOtrosGastosActionPerformed
+        if (validarCajas(txtValOtros.getText()))
+        txtTotalOtrosGastos.setText(String.valueOf(Double.parseDouble(txtTotalOtrosGastos.getText()) + Double.parseDouble(txtValOtros.getText())));
+        txtValOtros.setText("0");
+        calcularTotalNoDeducible();
+    }//GEN-LAST:event_cmdMasOtrosGastosActionPerformed
 
-    private void cmdEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditarActionPerformed
-        accion = "editar";
-        habilitarModificacion(true);
-    }//GEN-LAST:event_cmdEditarActionPerformed
-
-    private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
+    private void txtTotalDeducibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalDeducibleActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmdEliminarActionPerformed
+    }//GEN-LAST:event_txtTotalDeducibleActionPerformed
+
+    private void txtTotalNoDeducibleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalNoDeducibleActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalNoDeducibleActionPerformed
+
+    private void txtTotalSinIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalSinIVAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalSinIVAActionPerformed
+
+    private void txtIVAActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIVAActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtIVAActionPerformed
+
+    private void txtTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTotalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTotalActionPerformed
+
+    private void cmdGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdGuardarActionPerformed
+        DatosFactura df = new DatosFactura();
+        TablaFactura tf = new TablaFactura();
+        idLimite = obtenerIdLimiteGasto();
+        if (idLimite < 0){
+            JOptionPane.showMessageDialog(null, "No ha ingresado los límites de gasto para este año. Ingréselos e intente nuevamente.");
+            return;
+        }
+        df.IdFactura = idFactura;
+        df.IdUsuario = idUsuario;
+        df.IdProveedor = idProveedor;
+        df.IdLimite = idLimite;
+        df.Numero = txtNumFactura.getText().trim();
+        df.Fecha = new java.sql.Date(dateFechaFactura.getDate().getTime());
+        df.SumAlimentacion = Double.parseDouble(txtTotalAlimentacion.getText().trim());
+        df.SumEducacion = Double.parseDouble(txtTotalEducacion.getText().trim());
+        df.SumSalud = Double.parseDouble(txtTotalSalud.getText().trim());
+        df.SumVestido = Double.parseDouble(txtTotalVestimenta.getText().trim());
+        df.SumVivienda = Double.parseDouble(txtTotalVivienda.getText().trim());
+        df.SumOtros = Double.parseDouble(txtTotalOtrosGastos.getText().trim());
+        df.SumGastosNegocio = Double.parseDouble(txtTotalGastoNegocio.getText().trim());
+        df.TotalSinIVA = Double.parseDouble(txtTotalSinIVA.getText().trim());
+        df.IVA = Double.parseDouble(txtIVA.getText().trim());
+        df.Total = Double.parseDouble(txtTotal.getText().trim());
+        boolean resultado = false;
+        switch (accion) {
+            case "nuevo":
+                resultado = tf.insertar(df);
+                break;
+            case "editar":
+                resultado = tf.editar(df);
+                break;
+        }
+        if (resultado){
+            JOptionPane.showMessageDialog(null, "Operación completada");
+            habilitarModificacionParte1(false);
+            habilitarModificacionParte2(false);
+            limpiar();
+            mostrar();
+        } else {
+            JOptionPane.showMessageDialog(null, "Error. La operación no ha podido ser ejecutada");
+        }
+    }//GEN-LAST:event_cmdGuardarActionPerformed
+
+    private void cmdCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCancelarActionPerformed
+        habilitarModificacionParte1(false);
+        habilitarModificacionParte2(false);
+        limpiar();
+        accion = "";
+    }//GEN-LAST:event_cmdCancelarActionPerformed
 
     private void gridFacturasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gridFacturasMouseClicked
         int fila = gridFacturas.rowAtPoint(evt.getPoint());
+        idFactura = Integer.parseInt(gridFacturas.getValueAt(fila, 0).toString());
+        idProveedor = Integer.parseInt(gridFacturas.getValueAt(fila, 2).toString());
+        idLimite = Integer.parseInt(gridFacturas.getValueAt(fila, 3).toString()); //comentr esta línea posteriormente
         txtNumFactura.setText(gridFacturas.getValueAt(fila, 4).toString());
         dateFechaFactura.setDate(Date.valueOf(gridFacturas.getValueAt(fila, 5).toString()));
         txtTotalAlimentacion.setText(gridFacturas.getValueAt(fila, 6).toString());
@@ -1035,9 +1132,65 @@ public class frmFactura extends javax.swing.JFrame {
         txtTotal.setText(gridFacturas.getValueAt(fila, 15).toString());
     }//GEN-LAST:event_gridFacturasMouseClicked
 
-    private void cmdEliminar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminar1ActionPerformed
+    private void txtNumFacturaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNumFacturaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_cmdEliminar1ActionPerformed
+    }//GEN-LAST:event_txtNumFacturaActionPerformed
+
+    private void cmdNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdNuevoActionPerformed
+        limpiar();
+        accion = "nuevo";
+        habilitarModificacionParte1(true);
+    }//GEN-LAST:event_cmdNuevoActionPerformed
+
+    private void cmdEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEditarActionPerformed
+        if (idFactura != -1) {
+            accion = "editar";
+            habilitarModificacionParte1(true);
+            mostrarProveedores(Integer.toString(idProveedor), "id");
+            habilitarModificacionParte2(true);
+        }
+    }//GEN-LAST:event_cmdEditarActionPerformed
+
+    private void cmdEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdEliminarActionPerformed
+        if (idFactura != -1) {
+            if (JOptionPane.showConfirmDialog(rootPane, "Seguro de eliminar", "Confirmar", 2) == 0){
+                TablaFactura tf = new TablaFactura();
+                DatosFactura df = new DatosFactura();
+                df.IdFactura = idFactura;
+                if (tf.eliminar(df)){
+                    JOptionPane.showMessageDialog(null, "Operación completada");
+                    limpiar();
+                    mostrar();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error. La operación no ha podido ser ejecutada");
+                }
+            }
+        }
+    }//GEN-LAST:event_cmdEliminarActionPerformed
+
+    private void cmdComprobarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdComprobarActionPerformed
+        idLimite = obtenerIdLimiteGasto();
+        switch(idLimite){
+            case -1:
+                JOptionPane.showMessageDialog(null, "No ha ingresado los límites de gasto para este año. Ingréselos e intente nuevamente.");
+                break;
+            case -2:
+                JOptionPane.showMessageDialog(null, "Fecha incorrecta.");
+                break;
+            default:
+                habilitarModificacionParte2(true);
+                break;
+        }
+    }//GEN-LAST:event_cmdComprobarActionPerformed
+
+    private void gridProveedorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_gridProveedorMouseClicked
+        int fila = gridProveedor.rowAtPoint(evt.getPoint());
+        idProveedor = Integer.parseInt(gridProveedor.getValueAt(fila, 0).toString());
+    }//GEN-LAST:event_gridProveedorMouseClicked
+
+    private void cmdBuscarRUCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBuscarRUCActionPerformed
+        mostrarProveedores(txtRUCProveedor.getText().trim(), "ruc");
+    }//GEN-LAST:event_cmdBuscarRUCActionPerformed
 
     /**
      * @param args the command line arguments
@@ -1056,31 +1209,38 @@ public class frmFactura extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmFactura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmFactura().setVisible(true);
+                FrmFactura dialog = new FrmFactura(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox cmbProveedor;
+    private javax.swing.JButton cmdBuscarRUC;
     private javax.swing.JButton cmdCancelar;
+    private javax.swing.JButton cmdComprobar;
     private javax.swing.JButton cmdEditar;
     private javax.swing.JButton cmdEliminar;
-    private javax.swing.JButton cmdEliminar1;
     private javax.swing.JButton cmdGuardar;
     private javax.swing.JButton cmdMasAlimentacion;
     private javax.swing.JButton cmdMasEducacion;
@@ -1099,31 +1259,34 @@ public class frmFactura extends javax.swing.JFrame {
     private javax.swing.JButton cmdNuevo;
     private com.toedter.calendar.JDateChooser dateFechaFactura;
     private javax.swing.JTable gridFacturas;
+    private javax.swing.JTable gridProveedor;
     private javax.swing.JPanel grpDetalleGastos;
     private javax.swing.JPanel grpInfoGeneral;
+    private javax.swing.JPanel grpInfoGeneral1;
     private javax.swing.JPanel grpTotales;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAlimentacion;
     private javax.swing.JLabel lblEducacion;
     private javax.swing.JLabel lblEqDeducible;
+    private javax.swing.JLabel lblEqDeducible1;
     private javax.swing.JLabel lblEqFecha;
     private javax.swing.JLabel lblEqIVA;
     private javax.swing.JLabel lblEqNoDeducible;
     private javax.swing.JLabel lblEqNumFactura;
-    private javax.swing.JLabel lblEqProveedor;
     private javax.swing.JLabel lblEqTipoGasto;
     private javax.swing.JLabel lblEqTotal;
     private javax.swing.JLabel lblEqTotalDeducibles;
     private javax.swing.JLabel lblEqTotalSinIVA;
     private javax.swing.JLabel lblGastoNegocio;
     private javax.swing.JLabel lblOtrosGastos;
-    private javax.swing.JLabel lblRUC;
     private javax.swing.JLabel lblSalud;
     private javax.swing.JLabel lblTotalRegs;
     private javax.swing.JLabel lblVestimenta;
     private javax.swing.JLabel lblVivienda;
     private javax.swing.JTextField txtIVA;
     private javax.swing.JTextField txtNumFactura;
+    private javax.swing.JTextField txtRUCProveedor;
     private javax.swing.JTextField txtTotal;
     private javax.swing.JTextField txtTotalAlimentacion;
     private javax.swing.JTextField txtTotalDeducible;

@@ -5,7 +5,7 @@
  */
 package com.amanda.Presentacion.Usuario;
 
-import com.amanda.Datos.Usuario;
+import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Utilidades.Cifrador;
 import com.amanda.Utilidades.Validador;
@@ -15,14 +15,14 @@ import javax.swing.JOptionPane;
  *
  * @author camm
  */
-public class DialogEditarInformacionUsuario extends javax.swing.JDialog {
+public class FrmEditarInformacionUsuario extends javax.swing.JDialog {
 
     TablaUsuario tablaUsuario = new TablaUsuario();
-    Usuario usuario = tablaUsuario.buscarPorCedula("1003952783");
+    DatosUsuario usuario = tablaUsuario.buscarPorCedula("1003952783");
     /**
      * Creates new form Dialog
      */
-    public DialogEditarInformacionUsuario(java.awt.Frame parent, boolean modal) {
+    public FrmEditarInformacionUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         
@@ -212,21 +212,23 @@ public class DialogEditarInformacionUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEditarInformacionUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogEditarInformacionUsuario dialog = new DialogEditarInformacionUsuario(new javax.swing.JFrame(), true);
+                FrmEditarInformacionUsuario dialog = new FrmEditarInformacionUsuario(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

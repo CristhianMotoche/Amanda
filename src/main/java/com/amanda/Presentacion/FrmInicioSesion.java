@@ -5,6 +5,9 @@
  */
 package com.amanda.Presentacion;
 
+import com.amanda.Datos.DatosUsuario;
+import com.amanda.Logica.TablaUsuario;
+import com.amanda.Presentacion.Usuario.FrmRegistroUsuario;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,6 +21,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
      */
     public FrmInicioSesion() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -40,8 +44,14 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         lblOlvidoContrasena = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setResizable(false);
 
         btnRegistrarse.setText("Registrarse");
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
+            }
+        });
 
         btnIngresar.setText("Ingresar");
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
@@ -57,7 +67,9 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             }
         });
 
-        passContrasena.setText("jPasswordField1");
+        txtNombreUsuario.setText("1003730148");
+
+        passContrasena.setText("Qazxsw1234");
 
         lblNombre.setText("Nombre Usuario:");
 
@@ -131,13 +143,26 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        // TODO add your handling code here:
+        
+        TablaUsuario tu = new TablaUsuario();
+        DatosUsuario du = tu.buscarPorCedula(txtNombreUsuario.getText().trim());
+        if (du != null){
+            FrmMenuPrincipal principal = new FrmMenuPrincipal();
+            principal.setUsuario(du);
+            principal.calcularEstadoAnual();
+            principal.setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
-        JOptionPane.showMessageDialog(this, "Hasta pronto");
-        System.exit(0);
+        this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        FrmRegistroUsuario regUsr = new FrmRegistroUsuario(this, true);
+        regUsr.setVisible(true);
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
     /**
      * @param args the command line arguments

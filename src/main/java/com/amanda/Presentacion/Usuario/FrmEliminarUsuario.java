@@ -5,7 +5,7 @@
  */
 package com.amanda.Presentacion.Usuario;
 
-import com.amanda.Datos.Usuario;
+import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Utilidades.Cifrador;
 import com.amanda.Utilidades.Validador;
@@ -15,14 +15,14 @@ import javax.swing.JOptionPane;
  *
  * @author camm
  */
-public class DialogEliminarUsuario extends javax.swing.JDialog {
+public class FrmEliminarUsuario extends javax.swing.JDialog {
 
     TablaUsuario tablaUsuario = new TablaUsuario();
-    Usuario usuario = tablaUsuario.buscarPorCedula("1725651630");
+    DatosUsuario usuario = tablaUsuario.buscarPorCedula("1725651630");
     /**
      * Creates new form DialogEliminarUsuario
      */
-    public DialogEliminarUsuario(java.awt.Frame parent, boolean modal) {
+    public FrmEliminarUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -140,20 +140,21 @@ public class DialogEliminarUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmEliminarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogEliminarUsuario dialog = new DialogEliminarUsuario(new javax.swing.JFrame(), true);
+                FrmEliminarUsuario dialog = new FrmEliminarUsuario(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
