@@ -6,7 +6,7 @@
 package com.amanda.Logica;
 
 import com.amanda.Datos.Datos;
-import com.amanda.Datos.Usuario;
+import com.amanda.Datos.DatosUsuario;
 import com.amanda.Utilidades.Cifrador;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +24,7 @@ public class TablaUsuario extends Tabla{
 
     @Override
     public boolean insertar(Datos dts) {
-        Usuario user = (Usuario) dts;
+        DatosUsuario user = (DatosUsuario) dts;
         cadSQL = "INSERT INTO USUARIO (NOMBRE, APELLIDO, CI, CONTRASENA, RESPUESTA1"
                 + ", RESPUESTA2, PREGUNTA1, PREGUNTA2) "
                 + "VALUES (?,?,?,?,?,?,?,?)";
@@ -51,7 +51,7 @@ public class TablaUsuario extends Tabla{
 
     @Override
     public boolean eliminar(Datos dts) {
-        Usuario usuario = (Usuario) dts;
+        DatosUsuario usuario = (DatosUsuario) dts;
         this.cadSQL = "DELETE FROM USUARIO "
                 + "WHERE CI LIKE \'" + usuario.getCedula() + "\'";
         int cuenta = 0;
@@ -71,7 +71,7 @@ public class TablaUsuario extends Tabla{
     @Override
     public boolean editar(Datos dts) {
         boolean ret = true;
-        Usuario usuario = (Usuario) dts;
+        DatosUsuario usuario = (DatosUsuario) dts;
         cadSQL = "UPDATE USUARIO SET NOMBRE = ?, APELLIDO = ?, CONTRASENA = ? "
                 + ", PREGUNTA1 = ?, PREGUNTA2 = ?, RESPUESTA1 = ?, RESPUESTA2 = ?"
                 + "WHERE CI LIKE \'" + usuario.getCedula() + "\'";
@@ -93,8 +93,8 @@ public class TablaUsuario extends Tabla{
         return ret;
     }
 
-    public Usuario buscarPorCedula(String cedula){
-        Usuario usuario = new Usuario();
+    public DatosUsuario buscarPorCedula(String cedula){
+        DatosUsuario usuario = new DatosUsuario();
         cadSQL = "SELECT * FROM USUARIO "
                + "WHERE CI LIKE \'" + cedula + "\'";
         try {
@@ -102,6 +102,7 @@ public class TablaUsuario extends Tabla{
             ResultSet resultado = sentencia.executeQuery(cadSQL);
 
             while (resultado.next()) {
+                usuario.setIdUsuario(resultado.getInt("idusuario"));
                 usuario.setCedula(resultado.getString("CI"));
                 usuario.setNombre(resultado.getString("NOMBRE"));
                 usuario.setApellido(resultado.getString("APELLIDO"));
@@ -113,12 +114,12 @@ public class TablaUsuario extends Tabla{
             }
             return usuario;
         } catch (Exception e) {
-            System.err.println("Error en la búsqueda por cédula!\n" + e);
+            //System.err.println("Error en la búsqueda por cédula!\n" + e);
             return null;
         }
     }
 
-    public void modificarContrasena(Usuario user, String contrasena) {
+    public void modificarContrasena(DatosUsuario user, String contrasena) {
         Cifrador cifrador = new Cifrador();
         user.setContrasena(cifrador.md5(contrasena.concat(contrasena)));
         editar(user);

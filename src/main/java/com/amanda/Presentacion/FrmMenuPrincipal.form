@@ -6,15 +6,18 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="jMenu1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Proveedor"/>
+            <Property name="text" type="java.lang.String" value="Proveedores"/>
             <Property name="name" type="java.lang.String" value="jProveedor" noResource="true"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="mnuProveedor">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Consultar"/>
                 <Property name="name" type="java.lang.String" value="jProvConsulta" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuProveedorActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -24,11 +27,14 @@
             <Property name="name" type="java.lang.String" value="jFacturas" noResource="true"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+            <MenuItem class="javax.swing.JMenuItem" name="mnuFacturas">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Consultar"/>
                 <Property name="name" type="java.lang.String" value="jFactConsulta" noResource="true"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuFacturasActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -73,17 +79,23 @@
                 <Property name="name" type="java.lang.String" value="JConSistema" noResource="true"/>
               </Properties>
               <SubComponents>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
+                <MenuItem class="javax.swing.JMenuItem" name="mnuA&#xf1;oActivo">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="A&#xf1;o Activo"/>
                     <Property name="name" type="java.lang.String" value="jAnioActivo" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuA&#xf1;oActivoActionPerformed"/>
+                  </Events>
                 </MenuItem>
-                <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
+                <MenuItem class="javax.swing.JMenuItem" name="mnuLimiteGasto">
                   <Properties>
                     <Property name="text" type="java.lang.String" value="L&#xed;mite de Gastos"/>
                     <Property name="name" type="java.lang.String" value="jLimiteGasto" noResource="true"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuLimiteGastoActionPerformed"/>
+                  </Events>
                 </MenuItem>
               </SubComponents>
             </Menu>
@@ -120,7 +132,8 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="title" type="java.lang.String" value="Men&#xfa; Principal"/>
+    <Property name="title" type="java.lang.String" value="Amanda"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
@@ -145,35 +158,44 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblNombreUsuario" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblAñoActivo" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Component id="lblMensajeAño" alignment="0" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="408" max="32767" attributes="0"/>
+              <EmptySpace pref="307" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="275" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblAñoActivo" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="lblMensajeAño" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="106" max="32767" attributes="0"/>
+              <Component id="lblNombreUsuario" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JLabel" name="jLabel1">
+    <Component class="javax.swing.JLabel" name="lblNombreUsuario">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Bienvenido "/>
+        <Property name="text" type="java.lang.String" value="Ha iniciado sesi&#xf3;n como [t&#xfa;]."/>
         <Property name="name" type="java.lang.String" value="lblBienvenido" noResource="true"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel2">
+    <Component class="javax.swing.JLabel" name="lblA&#xf1;oActivo">
       <Properties>
         <Property name="text" type="java.lang.String" value="A&#xf1;o Activo:"/>
+        <Property name="name" type="java.lang.String" value="lblAnioActivo" noResource="true"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="lblMensajeA&#xf1;o">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="[mesaje a&#xf1;o activo]"/>
         <Property name="name" type="java.lang.String" value="lblAnioActivo" noResource="true"/>
       </Properties>
     </Component>

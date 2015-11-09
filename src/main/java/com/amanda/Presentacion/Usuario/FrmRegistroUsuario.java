@@ -5,7 +5,7 @@
  */
 package com.amanda.Presentacion.Usuario;
 
-import com.amanda.Datos.Usuario;
+import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Utilidades.Cifrador;
 import com.amanda.Utilidades.Validador;
@@ -15,12 +15,12 @@ import javax.swing.JOptionPane;
  *
  * @author camm
  */
-public class DialogRegistroUsuario extends javax.swing.JDialog {
+public class FrmRegistroUsuario extends javax.swing.JDialog {
 
     /**
      * Creates new form DialogRegistroUsuario
      */
-    public DialogRegistroUsuario(java.awt.Frame parent, boolean modal) {
+    public FrmRegistroUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -87,10 +87,6 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
 
         lblResp2.setText("Respuesta 2:");
 
-        passContrasena.setText("jPasswordField1");
-
-        passConfirmacion.setText("jPasswordField2");
-
         cmbPregunta1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "¿Cuál es tu película favorita?", "¿Nombre de tu primera mascota?", "¿Cumpleaños de tu mamá?", "¿Cuál es tu libro preferido?" }));
 
         cmbPregunta2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "¿Cuál es tu película favorita?", "¿Nombre de tu primera mascota?", "¿Cumpleaños de tu mamá?", "¿Cuál es tu libro preferido" }));
@@ -124,10 +120,10 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
                         .addGroup(pnlRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(lblResp2)
                             .addComponent(lblPregunta2, javax.swing.GroupLayout.Alignment.LEADING))
-                        .addGap(58, 58, 58)
+                        .addGap(51, 51, 51)
                         .addGroup(pnlRegistroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtResp2)
-                            .addComponent(cmbPregunta2, 0, 1, Short.MAX_VALUE))))
+                            .addComponent(cmbPregunta2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(txtResp2))))
                 .addGap(22, 22, 22))
             .addGroup(pnlRegistroLayout.createSequentialGroup()
                 .addGap(84, 84, 84)
@@ -203,10 +199,10 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        if (camposValidos()) {
-            ingresarNuevoUsuario();
-        }
+        if (camposValidos()) 
+            if (ingresarNuevoUsuario())
+                this.dispose();
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
@@ -226,20 +222,21 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRegistroUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogRegistroUsuario dialog = new DialogRegistroUsuario(new javax.swing.JFrame(), true);
+                FrmRegistroUsuario dialog = new FrmRegistroUsuario(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {
@@ -275,8 +272,9 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
     private javax.swing.JTextField txtResp2;
     // End of variables declaration//GEN-END:variables
 
-    private void ingresarNuevoUsuario() {
-        Usuario user = new Usuario();
+    private boolean ingresarNuevoUsuario() {
+        boolean ret = false;
+        DatosUsuario user = new DatosUsuario();
         Cifrador cifrador = new Cifrador();
 
         user.setNombre(this.txtNombre.getText().trim());
@@ -294,6 +292,7 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
         if (tablaUsuario.buscarPorCedula(user.getCedula()).getCedula() == null) {
             if (tablaUsuario.insertar(user)) {
                 JOptionPane.showMessageDialog(this, "Ingreso con éxito");
+                ret = true;
             } else {
                 JOptionPane.showMessageDialog(this, "Error al insertar");
             }
@@ -301,7 +300,7 @@ public class DialogRegistroUsuario extends javax.swing.JDialog {
         else{
             JOptionPane.showMessageDialog(this, "El usuario ya se encuentra registrado");
         }
-
+        return ret;
     }
 
     private boolean camposValidos() {

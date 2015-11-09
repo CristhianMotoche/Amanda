@@ -5,19 +5,19 @@
  */
 package com.amanda.Presentacion.Usuario;
 
-import com.amanda.Datos.Usuario;
+import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.TablaUsuario;
 import javax.swing.JOptionPane;
 /**
  *
  * @author camm
  */
-public class DialogRestaurarContrasena extends javax.swing.JDialog {
+public class FrmRestaurarContraseña extends javax.swing.JDialog {
 
     /**
      * Creates new form DialogRestaurarContrasena
      */
-    public DialogRestaurarContrasena(java.awt.Frame parent, boolean modal) {
+    public FrmRestaurarContraseña(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
@@ -163,7 +163,7 @@ public class DialogRestaurarContrasena extends javax.swing.JDialog {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
         // TODO add your handling code here:
-        Usuario user;
+        DatosUsuario user;
         TablaUsuario tablaUsuario = new TablaUsuario();
         user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
 
@@ -190,7 +190,7 @@ public class DialogRestaurarContrasena extends javax.swing.JDialog {
     private void btnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerificarActionPerformed
         // TODO add your handling code here:
         TablaUsuario tablaUsuario = new TablaUsuario();
-        Usuario user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
+        DatosUsuario user = tablaUsuario.buscarPorCedula(this.txtCedula.getText());
 
         if (user != null && user.getCedula() != null) {
             this.cmbPregunta1.setSelectedIndex(user.getPreg1());
@@ -219,20 +219,21 @@ public class DialogRestaurarContrasena extends javax.swing.JDialog {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRestaurarContraseña.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRestaurarContraseña.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRestaurarContraseña.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DialogRestaurarContrasena.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrmRestaurarContraseña.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                DialogRestaurarContrasena dialog = new DialogRestaurarContrasena(new javax.swing.JFrame(), true);
+                FrmRestaurarContraseña dialog = new FrmRestaurarContraseña(new javax.swing.JFrame(), true);
                 dialog.addWindowListener(new java.awt.event.WindowAdapter() {
                     @Override
                     public void windowClosing(java.awt.event.WindowEvent e) {

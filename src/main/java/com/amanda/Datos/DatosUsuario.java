@@ -9,7 +9,7 @@ package com.amanda.Datos;
  *
  * @author camm
  */
-public class Usuario extends Datos{
+public class DatosUsuario extends Datos{
     private String nombre;
     private String cedula;
     private String apellido;
@@ -18,9 +18,18 @@ public class Usuario extends Datos{
     private int preg2;
     private String resp1;
     private String resp2;
+    private int idUsuario;
 
     // Constructor
-    public Usuario() {
+    public DatosUsuario() {
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     // Getter
