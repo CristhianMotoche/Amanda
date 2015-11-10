@@ -5,17 +5,16 @@
  */
 package com.amanda.Presentacion;
 
+import com.amanda.Presentacion.Proveedor.FrmProveedor;
+import com.amanda.Presentacion.Configuracion.FrmAñoActivo;
+import com.amanda.Presentacion.Factura.FrmFactura;
 import com.amanda.Datos.DatosLimiteGasto;
 import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.ConsultaAleatoria;
 import com.amanda.Logica.TablaLimiteGasto;
-import java.awt.Image;
+import com.amanda.Presentacion.Usuario.FrmEditarInformacionUsuario;
+import com.amanda.Presentacion.Usuario.FrmEliminarUsuario;
 import java.util.Calendar;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JLayeredPane;
-import javax.swing.JOptionPane;
 
 
 /**
@@ -25,18 +24,19 @@ import javax.swing.JOptionPane;
 public class FrmMenuPrincipal extends javax.swing.JFrame {
     private DatosUsuario usr;
     private int añoActivo;
+
     public FrmMenuPrincipal() {
         initComponents();
         setLocationRelativeTo(null);
         Calendar fecha = Calendar.getInstance();
         añoActivo = fecha.get(Calendar.YEAR);
     }
-    
+
     public void setUsuario(DatosUsuario Usuario){
         this.usr = Usuario;
         lblNombreUsuario.setText("Ha iniciado sesión como " + Usuario.getNombre() + ".");
     }
-    
+
     public void calcularEstadoAnual() {
         lblAñoActivo.setText("Año activo: " + Integer.toString(añoActivo));
         DatosLimiteGasto dlg = new DatosLimiteGasto();
@@ -175,10 +175,20 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
 
         jMenuItem8.setText("Editar");
         jMenuItem8.setName("jEditar"); // NOI18N
+        jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem8ActionPerformed(evt);
+            }
+        });
         jMenu8.add(jMenuItem8);
 
         jMenuItem9.setText("Eliminar");
         jMenuItem9.setName("jEliminar"); // NOI18N
+        jMenuItem9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem9ActionPerformed(evt);
+            }
+        });
         jMenu8.add(jMenuItem9);
 
         jMenu5.add(jMenu8);
@@ -251,6 +261,21 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuAñoActivoActionPerformed
 
+    private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
+        FrmEditarInformacionUsuario frmEditar = new FrmEditarInformacionUsuario(this, true);
+        frmEditar.setUsuario(usr);
+        frmEditar.setLocationRelativeTo(this);
+        frmEditar.setDatos();
+        frmEditar.setVisible(true);
+    }//GEN-LAST:event_jMenuItem8ActionPerformed
+
+    private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
+        FrmEliminarUsuario fru = new FrmEliminarUsuario(this, true);
+        fru.setLocationRelativeTo(this);
+        fru.setUsuario(usr);
+        fru.setVisible(true);
+    }//GEN-LAST:event_jMenuItem9ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,7 +283,7 @@ public class FrmMenuPrincipal extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

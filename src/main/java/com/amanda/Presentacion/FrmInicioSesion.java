@@ -8,6 +8,8 @@ package com.amanda.Presentacion;
 import com.amanda.Datos.DatosUsuario;
 import com.amanda.Logica.TablaUsuario;
 import com.amanda.Presentacion.Usuario.FrmRegistroUsuario;
+import com.amanda.Presentacion.Usuario.FrmRestaurarContraseña;
+import com.amanda.Utilidades.Cifrador;
 import javax.swing.JOptionPane;
 
 /**
@@ -37,9 +39,9 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         btnRegistrarse = new javax.swing.JButton();
         btnIngresar = new javax.swing.JButton();
         btnSalir = new javax.swing.JButton();
-        txtNombreUsuario = new javax.swing.JTextField();
+        txtCedulaIdentidad = new javax.swing.JTextField();
         passContrasena = new javax.swing.JPasswordField();
-        lblNombre = new javax.swing.JLabel();
+        lblCedula = new javax.swing.JLabel();
         lblContrasena = new javax.swing.JLabel();
         lblOlvidoContrasena = new javax.swing.JLabel();
 
@@ -67,15 +69,20 @@ public class FrmInicioSesion extends javax.swing.JFrame {
             }
         });
 
-        txtNombreUsuario.setText("1003730148");
+        txtCedulaIdentidad.setText("0914010459");
 
         passContrasena.setText("Qazxsw1234");
 
-        lblNombre.setText("Nombre Usuario:");
+        lblCedula.setText("Cédula Identidad:");
 
         lblContrasena.setText("Contraseña:");
 
         lblOlvidoContrasena.setText("¿Olvidaste tu contraseña?");
+        lblOlvidoContrasena.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblOlvidoContrasenaMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout pnlSesionLayout = new javax.swing.GroupLayout(pnlSesion);
         pnlSesion.setLayout(pnlSesionLayout);
@@ -88,7 +95,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
                     .addGroup(pnlSesionLayout.createSequentialGroup()
                         .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(btnRegistrarse)
-                            .addComponent(lblNombre))
+                            .addComponent(lblCedula))
                         .addGap(43, 43, 43)
                         .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlSesionLayout.createSequentialGroup()
@@ -97,17 +104,17 @@ public class FrmInicioSesion extends javax.swing.JFrame {
                                 .addComponent(btnSalir))
                             .addComponent(lblOlvidoContrasena)
                             .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(txtNombreUsuario, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtCedulaIdentidad, javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(passContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)))))
-                .addContainerGap(89, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         pnlSesionLayout.setVerticalGroup(
             pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlSesionLayout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtNombreUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblNombre))
+                    .addComponent(txtCedulaIdentidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblCedula))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlSesionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(passContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -143,15 +150,20 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
-        
         TablaUsuario tu = new TablaUsuario();
-        DatosUsuario du = tu.buscarPorCedula(txtNombreUsuario.getText().trim());
+        DatosUsuario du = tu.buscarPorCedula(this.txtCedulaIdentidad.getText().trim());
+
         if (du != null){
-            FrmMenuPrincipal principal = new FrmMenuPrincipal();
-            principal.setUsuario(du);
-            principal.calcularEstadoAnual();
-            principal.setVisible(true);
-            this.dispose();
+            if (usuarioValido(du)) {
+                FrmMenuPrincipal principal = new FrmMenuPrincipal();
+                principal.setUsuario(du);
+                principal.calcularEstadoAnual();
+                principal.setVisible(true);
+                this.dispose();
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "No existe el usuario");
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
@@ -161,8 +173,15 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
         FrmRegistroUsuario regUsr = new FrmRegistroUsuario(this, true);
+        regUsr.setLocationRelativeTo(this);
         regUsr.setVisible(true);
     }//GEN-LAST:event_btnRegistrarseActionPerformed
+
+    private void lblOlvidoContrasenaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblOlvidoContrasenaMouseClicked
+        FrmRestaurarContraseña frc = new FrmRestaurarContraseña(this, true);
+        frc.setLocationRelativeTo(this);
+        frc.setVisible(true);
+    }//GEN-LAST:event_lblOlvidoContrasenaMouseClicked
 
     /**
      * @param args the command line arguments
@@ -171,7 +190,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -203,11 +222,29 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnRegistrarse;
     private javax.swing.JButton btnSalir;
+    private javax.swing.JLabel lblCedula;
     private javax.swing.JLabel lblContrasena;
-    private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblOlvidoContrasena;
     private javax.swing.JPasswordField passContrasena;
     private javax.swing.JPanel pnlSesion;
-    private javax.swing.JTextField txtNombreUsuario;
+    private javax.swing.JTextField txtCedulaIdentidad;
     // End of variables declaration//GEN-END:variables
+
+    private boolean usuarioValido(DatosUsuario du) {
+        Cifrador cifrador = new Cifrador();
+        String hashContrasena = (cifrador
+                .md5((new String(this.passContrasena.getPassword())
+                .concat(du.getCedula()))));
+        return validarCoincidencia(hashContrasena, du.getContrasena());
+    }
+
+    private boolean validarCoincidencia(String contrasena, String confirmacion) {
+        if (confirmacion.equals(contrasena)) {
+            return true;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "La contraseña no es correcta");
+            return false;
+        }
+    }
 }

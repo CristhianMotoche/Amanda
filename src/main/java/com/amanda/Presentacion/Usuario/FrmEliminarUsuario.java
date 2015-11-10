@@ -17,8 +17,8 @@ import javax.swing.JOptionPane;
  */
 public class FrmEliminarUsuario extends javax.swing.JDialog {
 
-    TablaUsuario tablaUsuario = new TablaUsuario();
-    DatosUsuario usuario = tablaUsuario.buscarPorCedula("1725651630");
+    private TablaUsuario tablaUsuario = new TablaUsuario();
+    private DatosUsuario usuario;
     /**
      * Creates new form DialogEliminarUsuario
      */
@@ -189,5 +189,9 @@ public class FrmEliminarUsuario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Contraseña incorrecta");
             return false;
         }
+    }
+
+    public void setUsuario(DatosUsuario usuario) {
+        this.usuario = usuario;
     }
 }

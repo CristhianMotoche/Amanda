@@ -1,4 +1,4 @@
-package com.amanda.Presentacion;
+package com.amanda.Presentacion.Proveedor;
 
 import com.amanda.Datos.*;
 import com.amanda.Logica.*;

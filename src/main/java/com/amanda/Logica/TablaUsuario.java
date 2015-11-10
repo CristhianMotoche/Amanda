@@ -94,7 +94,7 @@ public class TablaUsuario extends Tabla{
     }
 
     public DatosUsuario buscarPorCedula(String cedula){
-        DatosUsuario usuario = new DatosUsuario();
+        DatosUsuario usuario = null;
         cadSQL = "SELECT * FROM USUARIO "
                + "WHERE CI LIKE \'" + cedula + "\'";
         try {
@@ -102,6 +102,7 @@ public class TablaUsuario extends Tabla{
             ResultSet resultado = sentencia.executeQuery(cadSQL);
 
             while (resultado.next()) {
+                usuario = new DatosUsuario();
                 usuario.setIdUsuario(resultado.getInt("idusuario"));
                 usuario.setCedula(resultado.getString("CI"));
                 usuario.setNombre(resultado.getString("NOMBRE"));
@@ -114,7 +115,7 @@ public class TablaUsuario extends Tabla{
             }
             return usuario;
         } catch (Exception e) {
-            //System.err.println("Error en la búsqueda por cédula!\n" + e);
+            System.err.println("Error en la búsqueda por cédula!\n" + e);
             return null;
         }
     }

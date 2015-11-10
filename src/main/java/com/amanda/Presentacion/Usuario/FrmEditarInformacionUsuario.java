@@ -17,20 +17,14 @@ import javax.swing.JOptionPane;
  */
 public class FrmEditarInformacionUsuario extends javax.swing.JDialog {
 
-    TablaUsuario tablaUsuario = new TablaUsuario();
-    DatosUsuario usuario = tablaUsuario.buscarPorCedula("1003952783");
+    private TablaUsuario tablaUsuario = new TablaUsuario();
+    private DatosUsuario usuario;
     /**
      * Creates new form Dialog
      */
     public FrmEditarInformacionUsuario(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        
-        this.txtCedula.setText(usuario.getCedula());
-        this.txtCedula.setEditable(false);
-        this.txtCedula.setEnabled(false);
-        this.txtNombre.setText(usuario.getNombre());
-        this.txtApellido.setText(usuario.getApellido());
     }
 
     /**
@@ -301,5 +295,17 @@ public class FrmEditarInformacionUsuario extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "La contraseña actual no es correcta");
             return false;
         }
+    }
+
+    public void setUsuario(DatosUsuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    public void setDatos(){
+        this.txtCedula.setText(this.usuario.getCedula());
+        this.txtCedula.setEditable(false);
+        this.txtCedula.setEnabled(false);
+        this.txtNombre.setText(this.usuario.getNombre());
+        this.txtApellido.setText(this.usuario.getApellido());
     }
 }

@@ -54,7 +54,7 @@
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
                               <Component id="btnRegistrarse" min="-2" max="-2" attributes="0"/>
-                              <Component id="lblNombre" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblCedula" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -65,13 +65,13 @@
                               </Group>
                               <Component id="lblOlvidoContrasena" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="txtNombreUsuario" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="txtCedulaIdentidad" alignment="0" max="32767" attributes="0"/>
                                   <Component id="passContrasena" alignment="0" pref="177" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                   </Group>
-                  <EmptySpace pref="89" max="32767" attributes="0"/>
+                  <EmptySpace pref="82" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -80,8 +80,8 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="txtNombreUsuario" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblNombre" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtCedulaIdentidad" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblCedula" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -126,9 +126,9 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalirActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JTextField" name="txtNombreUsuario">
+        <Component class="javax.swing.JTextField" name="txtCedulaIdentidad">
           <Properties>
-            <Property name="text" type="java.lang.String" value="1003730148"/>
+            <Property name="text" type="java.lang.String" value="0914010459"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JPasswordField" name="passContrasena">
@@ -136,9 +136,9 @@
             <Property name="text" type="java.lang.String" value="Qazxsw1234"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="lblNombre">
+        <Component class="javax.swing.JLabel" name="lblCedula">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Nombre Usuario:"/>
+            <Property name="text" type="java.lang.String" value="C&#xe9;dula Identidad:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblContrasena">
@@ -150,6 +150,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&#xbf;Olvidaste tu contrase&#xf1;a?"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblOlvidoContrasenaMouseClicked"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

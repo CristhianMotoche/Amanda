@@ -199,10 +199,10 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        if (camposValidos()) 
+        if (camposValidos())
             if (ingresarNuevoUsuario())
                 this.dispose();
-        
+
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
@@ -212,7 +212,7 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -289,7 +289,7 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
         user.setResp2(this.txtResp2.getText().trim());
 
         TablaUsuario tablaUsuario = new TablaUsuario();
-        if (tablaUsuario.buscarPorCedula(user.getCedula()).getCedula() == null) {
+        if (tablaUsuario.buscarPorCedula(user.getCedula()) == null) {
             if (tablaUsuario.insertar(user)) {
                 JOptionPane.showMessageDialog(this, "Ingreso con éxito");
                 ret = true;
@@ -304,7 +304,7 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
     }
 
     private boolean camposValidos() {
-        
+
         String contrasena = new String(this.passContrasena.getPassword());
         String confirmacion = new String(this.passConfirmacion.getPassword());
 
@@ -312,7 +312,7 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
                 && validarContrasena(contrasena)
                 && validarCoincidencia(contrasena, confirmacion);
     }
-    
+
     private boolean validarCedula() {
         Validador validador = new Validador();
         if (validador.cedulaValida(this.txtCedula.getText())){
@@ -323,7 +323,7 @@ public class FrmRegistroUsuario extends javax.swing.JDialog {
             return false;
         }
     }
-    
+
     private boolean validarContrasena(String contrasena) {
         Validador validador = new Validador();
         if (validador.contrasenaValida(contrasena)){
